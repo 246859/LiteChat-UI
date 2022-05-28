@@ -24,3 +24,9 @@
 #register:active {
     color: white;
 }
+
+@media screen and (max-width: 600px) {
+    .login-form-box{
+        /*width: 200px;*/
+    }
+}

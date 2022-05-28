@@ -9,7 +9,7 @@
                 label-position="top"
                 label-width="100px"
                 :model="registerForm"
-                :rules = "registerRules"
+                :rules="registerRules"
                 style="max-width: 300px;">
 
               <el-form-item label="输入用户名" prop='account'>
@@ -44,7 +44,7 @@
                     round
                     color='rgb(93,203,129)'
                     id='register'
-                    @click = '$router.push({name:"login"})'
+                    @click='$router.push({name:"login"})'
                     size='large' style="align-items: center;justify-content: center">返回
                 </el-button>
 
@@ -72,13 +72,14 @@ import CommonPage from "@/components/commonPage";
 import '../../assets/style/common.css';
 import '../../assets/style/loginCard.css';
 import {useLoginStore} from "@/sotre/loginStore";
+
 export default {
   name: "register-page",
-  components:{
+  components: {
     CommonPage,
     logoTitle
   },
-  setup(){
+  setup() {
     const registerForm = useLoginStore().$state.registerForm;//绑定pinia中的数据缓存
 
     const validateRePass = (rule, value, callback) => {
@@ -92,20 +93,20 @@ export default {
     }
 
     const registerRules = reactive({
-      account:[
-        {required:true,message:'请输入用户名!',trigger:'blur'},
-        { min: 3, max: 10, message: '用户名长度须大于3个字符且小于10个字符', trigger: 'blur' },
+      account: [
+        {required: true, message: '请输入用户名!', trigger: 'blur'},
+        {min: 3, max: 10, message: '用户名长度须大于3个字符且小于10个字符', trigger: 'blur'},
       ],
-      password:[
-        {required:true,message:'请输入密码!',trigger:'blur'},
-        { min: 6, max: 20, message: '密码长度须大于6个字符且小于20个字符', trigger: 'blur' },
+      password: [
+        {required: true, message: '请输入密码!', trigger: 'blur'},
+        {min: 6, max: 20, message: '密码长度须大于6个字符且小于20个字符', trigger: 'blur'},
       ],
-      repassword:[
-        {required:true,validator:validateRePass,trigger:'blur'}
+      repassword: [
+        {required: true, validator: validateRePass, trigger: 'blur'}
       ]
     })
 
-    return{
+    return {
       registerForm,
       registerRules
     }
@@ -114,4 +115,16 @@ export default {
 </script>
 
 <style scoped>
+:deep(.el-form-item__label) {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+:deep(.el-button--large.is-round) {
+  padding: 25px 130px;
+}
+
+:deep(.el-button) {
+  color: white;
+}
 </style>

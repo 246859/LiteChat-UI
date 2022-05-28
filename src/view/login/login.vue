@@ -30,23 +30,29 @@
 
               <el-form-item class="login-foot">
 
-                <el-button
-                    type="primary"
-                    round
-                    color='rgb(93,203,129)'
-                    id='register'
-                    @click = '$router.push({name:"register"})'
-                    size='large' style="align-items: center;justify-content: center">注册
-                </el-button>
+                <div>
+                  <el-button
+                      type="primary"
+                      round
+                      id='login'
+                      size='large' style="align-items: center;justify-content: center">登陆
+                  </el-button>
+                </div>
 
-                <el-button
-                    type="primary"
-                    round
-                    id='login'
-                    size='large' style="align-items: center;justify-content: center">登陆
-                </el-button>
+                <div>
+                  <el-button
+                      type="primary"
+                      round
+                      color='rgb(93,203,129)'
+                      id='register'
+                      @click = '$router.push({name:"register"})'
+                      size='large' style="align-items: center;justify-content: center">注册
+                  </el-button>
+                </div>
+
 
               </el-form-item>
+
             </el-form>
 
           </div>
@@ -93,4 +99,17 @@ export default {
 </script>
 
 <style scoped>
+:deep(.el-form-item__label) {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+:deep(.el-button--large.is-round) {
+  padding: 25px 130px;
+  margin: 5px 0;
+}
+
+:deep(.el-button) {
+  color: white;
+}
 </style>
