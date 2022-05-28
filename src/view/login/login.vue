@@ -23,6 +23,7 @@
                 <el-input
                     type="password"
                     clearable
+                    show-password
                     size="large"
                     v-model="loginForm.password"/>
               </el-form-item>
@@ -72,12 +73,7 @@ export default {
   },
   setup() {
 
-    const onUseLoginStore = useLoginStore();
-
-    const loginForm = reactive({
-      account: '',
-      password: '',
-    });
+    const loginForm = useLoginStore().$state.loginForm;
 
     const loginRules = reactive({
       account:[

@@ -23,6 +23,7 @@
                 <el-input
                     type="password"
                     clearable
+                    show-password
                     size="large"
                     v-model="registerForm.password"/>
               </el-form-item>
@@ -31,6 +32,7 @@
                 <el-input
                     type="password"
                     clearable
+                    show-password
                     size="large"
                     v-model="registerForm.repassword"/>
               </el-form-item>
@@ -69,6 +71,7 @@ import {reactive} from "vue";
 import CommonPage from "@/components/commonPage";
 import '../../assets/style/common.css';
 import '../../assets/style/loginCard.css';
+import {useLoginStore} from "@/sotre/loginStore";
 export default {
   name: "register-page",
   components:{
@@ -76,11 +79,7 @@ export default {
     logoTitle
   },
   setup(){
-    const registerForm = reactive({
-      account:'',
-      password:'',
-      repassword:''
-    });
+    const registerForm = useLoginStore().$state.registerForm;//绑定pinia中的数据缓存
 
     const validateRePass = (rule, value, callback) => {
       if (value === '') {
@@ -99,6 +98,7 @@ export default {
       ],
       password:[
         {required:true,message:'请输入密码!',trigger:'blur'},
+        { min: 6, max: 20, message: '密码长度须大于6个字符且小于20个字符', trigger: 'blur' },
       ],
       repassword:[
         {required:true,validator:validateRePass,trigger:'blur'}
