@@ -1,0 +1,51 @@
+/*全局样式*/
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    font-size: 17px;
+}
+/*首页渐变背景*/
+.index-bac{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(150deg,#72afd3,#96fbc4,rgb(93,203,129),#72afd3,#96fbc4);
+    background-size:500%;
+    /*backdrop-filter: saturate(180%) blur(20px);*/
+}
+/*表单卡片容器*/
+.form-container-card{
+    display: flex;
+    flex-wrap: wrap;
+    background: rgb(254,254,254);
+    width: 400px;
+    height: 450px;
+    padding: 20px;
+    border-radius: 8%;
+    box-shadow: 3px 4px 30px grey;
+}
+
+.color-change-4x {
+    animation: color-change-4x 13s ease-in-out infinite alternate forwards;
+}
+@keyframes color-change-4x {
+    0% {
+        background-position: 0 0;
+    }
+    25% {
+        background-position: 50% 50%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 50% 50%;
+    }
+    100%{
+        background-position: 0% 0;
+    }
+}
+

@@ -1,0 +1,26 @@
+.login-form-box {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 50px;
+    width: 300px;
+}
+
+.form-box {
+    width: 300px;
+}
+
+.login-foot {
+    padding-top: 20px;
+}
+#register {
+    color: white;
+}
+
+#register:hover {
+    color: white;
+}
+
+#register:active {
+    color: white;
+}
