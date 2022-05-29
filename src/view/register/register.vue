@@ -1,7 +1,7 @@
 <template>
   <common-page>
     <template v-slot:default>
-      <div class="form-container-card">
+      <div class="form-container-card slide-in-left" ref="card">
         <logo-title/>
         <div class="login-form-box">
           <div class="form-box">
@@ -39,21 +39,26 @@
 
               <el-form-item class="login-foot">
 
-                <el-button
-                    type="primary"
-                    round
-                    color='rgb(93,203,129)'
-                    id='register'
-                    @click='$router.push({name:"login"})'
-                    size='large' style="align-items: center;justify-content: center">返回
-                </el-button>
+                <div>
+                  <el-button
+                      type="primary"
+                      round
+                      color='rgb(93,203,129)'
+                      id='register'
+                      @click='$router.push({name:"login"})'
+                      size='large' style="align-items: center;justify-content: center">返回
+                  </el-button>
+                </div>
 
-                <el-button
-                    type="primary"
-                    round
-                    id='login'
-                    size='large' style="align-items: center;justify-content: center">注册
-                </el-button>
+                <div>
+                  <el-button
+                      type="primary"
+                      round
+                      id='login'
+                      size='large' style="align-items: center;justify-content: center">注册
+                  </el-button>
+                </div>
+
 
               </el-form-item>
             </el-form>
@@ -67,11 +72,12 @@
 
 <script>
 import logoTitle from "@/components/logoTitle";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import CommonPage from "@/components/commonPage";
 import '../../assets/style/common.css';
 import '../../assets/style/loginCard.css';
 import {useLoginStore} from "@/sotre/loginStore";
+import '../../assets/style/animate.css';
 
 export default {
   name: "register-page",
@@ -81,6 +87,8 @@ export default {
   },
   setup() {
     const registerForm = useLoginStore().$state.registerForm;//绑定pinia中的数据缓存
+
+    const card = ref(null);
 
     const validateRePass = (rule, value, callback) => {
       if (value === '') {
@@ -108,7 +116,8 @@ export default {
 
     return {
       registerForm,
-      registerRules
+      registerRules,
+      card
     }
   }
 }
@@ -122,9 +131,15 @@ export default {
 
 :deep(.el-button--large.is-round) {
   padding: 25px 130px;
+  margin: 5px 0;
 }
 
 :deep(.el-button) {
   color: white;
 }
+
+.form-container-card {
+  height: 515px;
+}
+
 </style>

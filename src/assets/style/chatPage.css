@@ -1,0 +1,8 @@
+.chat-big-box{
+    display: flex;
+    background: white;
+    height: 900px;
+    width: 1300px;
+    box-shadow: 3px 4px 30px grey;
+
+}

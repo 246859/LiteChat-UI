@@ -1,7 +1,7 @@
 <template>
   <common-page>
     <template v-slot:default>
-      <div class="form-container-card">
+      <div class="form-container-card slide-in-right">
         <logo-title/>
         <div class="login-form-box">
           <div class="form-box">
