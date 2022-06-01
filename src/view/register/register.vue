@@ -1,61 +1,70 @@
 <template>
   <common-page>
     <template v-slot:default>
-      <div class="form-container-card slide-in-left" ref="card">
+      <div ref="card" class="form-container-card slide-in-left">
         <logo-title/>
         <div class="login-form-box">
           <div class="form-box">
             <el-form
-                label-position="top"
-                label-width="100px"
+                ref="registerFormRef"
                 :model="registerForm"
                 :rules="registerRules"
+                label-position="top"
+                label-width="100px"
                 style="max-width: 300px;">
 
-              <el-form-item label="输入用户名" prop='account'>
+              <el-form-item label="输入用户名" prop='userName'>
                 <el-input
+                    v-model="registerForm.userName"
                     clearable
-                    size="large"
-                    v-model="registerForm.account"/>
+                    size="large"/>
+              </el-form-item>
+
+              <el-form-item label="输入昵称" prop='nickName'>
+                <el-input
+                    v-model="registerForm.nickName"
+                    clearable
+                    size="large"/>
               </el-form-item>
 
               <el-form-item label="输入密码" prop='password'>
                 <el-input
-                    type="password"
+                    v-model="registerForm.password"
                     clearable
                     show-password
                     size="large"
-                    v-model="registerForm.password"/>
+                    type="password"/>
               </el-form-item>
 
               <el-form-item label="再次输入密码" prop='repassword'>
                 <el-input
-                    type="password"
+                    v-model="registerForm.repassword"
                     clearable
                     show-password
                     size="large"
-                    v-model="registerForm.repassword"/>
+                    type="password"/>
               </el-form-item>
 
               <el-form-item class="login-foot">
 
                 <div>
                   <el-button
-                      type="primary"
-                      round
-                      color='rgb(93,203,129)'
                       id='register'
-                      @click='$router.push({name:"login"})'
-                      size='large' style="align-items: center;justify-content: center">返回
+                      color='rgb(93,203,129)'
+                      round
+                      size='large'
+                      style="align-items: center;justify-content: center"
+                      type="primary" @click='$router.push({name:"login"})'>返回
                   </el-button>
                 </div>
 
                 <div>
                   <el-button
-                      type="primary"
-                      round
                       id='login'
-                      size='large' style="align-items: center;justify-content: center">注册
+                      round
+                      size='large'
+                      type="primary"
+                      @click="submitForm(registerFormRef)">注册
                   </el-button>
                 </div>
 
@@ -76,8 +85,11 @@ import {reactive, ref} from "vue";
 import CommonPage from "@/components/commonPage";
 import '../../assets/style/common.css';
 import '../../assets/style/loginCard.css';
-import {useLoginStore} from "@/sotre/loginStore";
+import {useAuthStore} from "@/sotre/authStore";
 import '../../assets/style/animate.css';
+import {errorTips, successTips} from "@/utils/messageTips";
+import {enOrNum} from '@/utils/regex';
+import {useRouter} from "vue-router";
 
 export default {
   name: "register-page",
@@ -86,24 +98,44 @@ export default {
     logoTitle
   },
   setup() {
-    const registerForm = useLoginStore().$state.registerForm;//绑定pinia中的数据缓存
 
-    const card = ref(null);
+    const router = useRouter();
+    const authStore = useAuthStore();
+
+    const data = reactive({
+      card: ref(null),
+      registerFormRef: ref(null),
+      registerForm: authStore.$state.registerForm,//绑定pinia中的数据缓存
+    })
+
 
     const validateRePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码!'))
-      } else if (value !== registerForm.password) {
+      } else if (value !== data.registerForm.password) {
         callback(new Error("两次输入的密码不一致!"))
       } else {
         callback()
       }
-    }
+    };
+
+    const enOrNumValidate = (rule, value, callback) => {//英文数字校验
+      callback(
+          enOrNum(value) ?
+              undefined :
+              new Error("用户名只能由英文或数字组成!")
+      )
+    };
 
     const registerRules = reactive({
-      account: [
+      userName: [
         {required: true, message: '请输入用户名!', trigger: 'blur'},
         {min: 3, max: 10, message: '用户名长度须大于3个字符且小于10个字符', trigger: 'blur'},
+        {validator: enOrNumValidate, trigger: 'blur'}
+      ],
+      nickName: [
+        {required: true, message: '请输入用户昵称!', trigger: 'blur'},
+        {min: 3, max: 10, message: '昵称长度须大于3个字符且小于15个字符', trigger: 'blur'},
       ],
       password: [
         {required: true, message: '请输入密码!', trigger: 'blur'},
@@ -112,18 +144,45 @@ export default {
       repassword: [
         {required: true, validator: validateRePass, trigger: 'blur'}
       ]
-    })
+    });
+
+    const submitForm = (formEl) => {//注册表单验证
+      if (!formEl) return
+      formEl.validate(valid => {
+        if (valid) {
+          authStore.register().then(res => {
+            if (res.data.code === 200) {
+              successTips(res.data.msg);
+              router.push({name: "login"});
+              authStore.reSetRegisterForm();
+            } else {
+              errorTips(res.data.msg);
+            }
+          }).catch(err => {
+            console.log(err)
+          });
+        } else {
+          errorTips("请填写正确的用户信息!");
+          return false
+        }
+      })
+    }
+
 
     return {
-      registerForm,
       registerRules,
-      card
+      submitForm,
+      ...data,
     }
   }
 }
 </script>
 
 <style scoped>
+.form-container-card {
+  height: 620px !important;
+}
+
 :deep(.el-form-item__label) {
   font-size: 18px;
   font-weight: bold;
