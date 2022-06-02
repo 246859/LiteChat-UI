@@ -4,6 +4,7 @@ import register from "@/view/register/register";
 import chatIndex from "@/view/chat/chatIndex";
 import {globalConfig} from "@/config/config";
 import {errorTips} from "@/utils/messageTips";
+import {LANG} from "@/config/lang";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -39,7 +40,7 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             next("/login");//否足额跳转到登陆界面
-            errorTips("")
+            errorTips(LANG.AUTH.LOGIN.NO_LOGIN)
         }
 
     } else {

@@ -9,6 +9,10 @@ export const LANG = {
             OK: "注册成功",
             FAIL: "注册失败"
         },
+        LOGOUT: {
+            OK: "退出成功",
+            FAIL: "退出失败"
+        },
         REQUEST: {
             OK: "请求成功:",
             FAIL: "请求失败:"
