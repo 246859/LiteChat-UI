@@ -72,6 +72,7 @@ import CommonPage from "@/components/commonPage";
 import {useAuthStore} from "@/sotre/authStore";
 import {useRouter} from "vue-router";
 import {errorTips, successTips} from "@/utils/messageTips";
+import {LANG} from "@/config/lang";
 
 
 export default {
@@ -89,10 +90,10 @@ export default {
 
     const loginRules = reactive({
       userName: [
-        {required: true, message: '请输入用户名!', trigger: 'blur'},
+        {required: true, message: LANG.FORM.USERNAME.ENTER, trigger: 'blur'},
       ],
       password: [
-        {required: true, message: '请输入密码!', trigger: 'blur'},
+        {required: true, message: LANG.FORM.PASSWORD.ENTER, trigger: 'blur'},
       ]
     });
 

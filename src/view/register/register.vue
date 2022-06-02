@@ -90,6 +90,7 @@ import '../../assets/style/animate.css';
 import {errorTips, successTips} from "@/utils/messageTips";
 import {enOrNum} from '@/utils/regex';
 import {useRouter} from "vue-router";
+import {LANG} from "@/config/lang";
 
 export default {
   name: "register-page",
@@ -111,9 +112,9 @@ export default {
 
     const validateRePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码!'))
+        callback(new Error(LANG.FORM.PASSWORD.RE_ENTER))
       } else if (value !== data.registerForm.password) {
-        callback(new Error("两次输入的密码不一致!"))
+        callback(new Error(LANG.FORM.PASSWORD.RE_INVALID))
       } else {
         callback()
       }
@@ -123,23 +124,23 @@ export default {
       callback(
           enOrNum(value) ?
               undefined :
-              new Error("用户名只能由英文或数字组成!")
+              new Error(LANG.FORM.USERNAME.INVALID)
       )
     };
 
     const registerRules = reactive({
       userName: [
-        {required: true, message: '请输入用户名!', trigger: 'blur'},
-        {min: 3, max: 10, message: '用户名长度须大于3个字符且小于10个字符', trigger: 'blur'},
+        {required: true, message: LANG.FORM.USERNAME.ENTER, trigger: 'blur'},
+        {min: 3, max: 10, message: LANG.FORM.USERNAME.BEYOND_LENGTH, trigger: 'blur'},
         {validator: enOrNumValidate, trigger: 'blur'}
       ],
       nickName: [
-        {required: true, message: '请输入用户昵称!', trigger: 'blur'},
-        {min: 3, max: 10, message: '昵称长度须大于3个字符且小于15个字符', trigger: 'blur'},
+        {required: true, message: LANG.FORM.NICKNAME.ENTER, trigger: 'blur'},
+        {min: 3, max: 10, message: LANG.FORM.NICKNAME.BEYOND_LENGTH, trigger: 'blur'},
       ],
       password: [
-        {required: true, message: '请输入密码!', trigger: 'blur'},
-        {min: 6, max: 20, message: '密码长度须大于6个字符且小于20个字符', trigger: 'blur'},
+        {required: true, message: LANG.FORM.PASSWORD.ENTER, trigger: 'blur'},
+        {min: 6, max: 20, message: LANG.FORM.PASSWORD.BEYOND_LENGTH, trigger: 'blur'},
       ],
       repassword: [
         {required: true, validator: validateRePass, trigger: 'blur'}
