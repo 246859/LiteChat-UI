@@ -1,0 +1,86 @@
+{
+  "id": "3447939",
+  "name": "Lite-chat",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "592049",
+      "name": "菜单",
+      "font_class": "caidan",
+      "unicode": "e790",
+      "unicode_decimal": 59280
+    },
+    {
+      "icon_id": "749757",
+      "name": "消息",
+      "font_class": "xiaoxi",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "1002631",
+      "name": "图片",
+      "font_class": "icon",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "1304895",
+      "name": "用户-圆",
+      "font_class": "yonghu-yuan",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "4737939",
+      "name": "消息",
+      "font_class": "xiaoxi1",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "6246304",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "8949037",
+      "name": "用户",
+      "font_class": "yonghu1",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
+      "icon_id": "9925125",
+      "name": "send",
+      "font_class": "send",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "11372682",
+      "name": "朋友圈",
+      "font_class": "pengyouquan",
+      "unicode": "e8b4",
+      "unicode_decimal": 59572
+    },
+    {
+      "icon_id": "12662241",
+      "name": "添加",
+      "font_class": "tianjia",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "16372320",
+      "name": "笑脸",
+      "font_class": "xiaolian",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    }
+  ]
+}

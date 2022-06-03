@@ -2,16 +2,27 @@
   <common-page>
     <template v-slot:default>
       <div class="chat-big-box">
-        <el-container>
+        <!--聊天页面容器 -->
+        <el-container style="border-radius: 5%">
+          <!--聊天左边侧边栏-->
           <el-aside width="400px">
-
+            <chat-side-bar/>
           </el-aside>
+          <!--聊天页面右边容器-->
           <el-container>
-            <el-button type="primary" @click="logout">注销</el-button>
-            <el-header style="background: #96fbc4">Header</el-header>
+            <!--聊天右边页面头部-->
+            <el-header>
+              Header
+            </el-header>
+            <!--聊天右边页面聊天消息页面-->
             <el-main>Main</el-main>
-            <el-footer height="200px" style="background: aqua">Footer</el-footer>
+            <!--聊天右边页面底部消息输入框-->
+            <el-footer height="200px">
+              Footer
+            </el-footer>
+
           </el-container>
+
         </el-container>
       </div>
     </template>
@@ -19,17 +30,21 @@
 </template>
 
 <script>
-import CommonPage from "@/components/commonPage";
+import CommonPage from "@/components/common/commonPage";
 import '../../assets/style/chatPage.css';
 import {useAuthStore} from "@/sotre/authStore";
 import {globalConfig} from "@/config/config";
 import {useRouter} from "vue-router";
 import {LANG} from "@/config/lang";
 import {errorTips, successTips} from "@/utils/messageTips";
+import chatSideBar from "@/components/chat/sideBar/chatSideBar";
 
 export default {
   name: "chatIndex",
-  components: {CommonPage},
+  components: {
+    CommonPage,
+    chatSideBar
+  },
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();

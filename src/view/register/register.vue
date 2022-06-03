@@ -80,9 +80,9 @@
 </template>
 
 <script>
-import logoTitle from "@/components/logoTitle";
+import logoTitle from "@/components/common/logoTitle";
 import {reactive, ref} from "vue";
-import CommonPage from "@/components/commonPage";
+import CommonPage from "@/components/common/commonPage";
 import '../../assets/style/common.css';
 import '../../assets/style/loginCard.css';
 import {useAuthStore} from "@/sotre/authStore";

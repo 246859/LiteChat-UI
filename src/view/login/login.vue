@@ -67,8 +67,8 @@
 import '../../assets/style/common.css';
 import '../../assets/style/loginCard.css';
 import {reactive} from "vue";
-import logoTitle from "@/components/logoTitle";
-import CommonPage from "@/components/commonPage";
+import logoTitle from "@/components/common/logoTitle";
+import CommonPage from "@/components/common/commonPage";
 import {useAuthStore} from "@/sotre/authStore";
 import {useRouter} from "vue-router";
 import {errorTips, successTips} from "@/utils/messageTips";

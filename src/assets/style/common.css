@@ -1,26 +1,28 @@
 /*全局样式*/
-*{
+* {
     padding: 0;
     margin: 0;
     list-style: none;
     text-decoration: none;
     font-size: 17px;
 }
+
 /*首页渐变背景*/
-.index-bac{
+.index-bac {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(150deg,#72afd3,#96fbc4,rgb(93,203,129),#72afd3,#96fbc4);
-    background-size:500%;
+    background: linear-gradient(150deg, #72afd3, #96fbc4, rgb(93, 203, 129), #72afd3, #96fbc4);
+    background-size: 500%;
     /*backdrop-filter: saturate(180%) blur(20px);*/
 }
+
 /*表单卡片容器*/
-.form-container-card{
+.form-container-card {
     display: flex;
     flex-wrap: wrap;
-    background: rgb(254,254,254);
+    background: rgb(254, 254, 254);
     width: 400px;
     height: 450px;
     padding: 20px;
@@ -31,6 +33,7 @@
 .color-change-4x {
     animation: color-change-4x 13s ease-in-out infinite alternate forwards;
 }
+
 @keyframes color-change-4x {
     0% {
         background-position: 0 0;
@@ -44,8 +47,42 @@
     75% {
         background-position: 50% 50%;
     }
-    100%{
+    100% {
         background-position: 0% 0;
     }
 }
 
+/*边界线 细*/
+.border-top-light {
+    border-top: rgb(220, 220, 220) solid 1px;
+}
+
+.border-right-light {
+    border-right: rgb(220, 220, 220) solid 1px;
+}
+
+.border-left-light {
+    border-left: rgb(220, 220, 220) solid 1px;
+}
+
+.border-bottom-light {
+    border-bottom: rgb(220, 220, 220) solid 1px;
+}
+
+
+/*边界线 粗*/
+.border-top-coarse {
+    border-top: rgb(240, 240, 240) solid 2px;
+}
+
+.border-right-coarse {
+    border-right: rgb(240, 240, 240) solid 2px;
+}
+
+.border-left-coarse {
+    border-left: rgb(240, 240, 240) solid 2px;
+}
+
+.border-bottom-coarse {
+    border-bottom: rgb(240, 240, 240) solid 2px;
+}

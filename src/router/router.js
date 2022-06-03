@@ -2,9 +2,6 @@ import {createRouter, createWebHistory} from 'vue-router';
 import login from "@/view/login/login";
 import register from "@/view/register/register";
 import chatIndex from "@/view/chat/chatIndex";
-import {globalConfig} from "@/config/config";
-import {errorTips} from "@/utils/messageTips";
-import {LANG} from "@/config/lang";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -33,19 +30,19 @@ const router = createRouter({
 });
 
 //前置路由守卫
-router.beforeEach((to, from, next) => {
-    if (to.meta.isAuth) {//该页面是否需要跳转
-
-        if (window.localStorage.getItem(globalConfig.tokenAddress)) {//用户是否携带token
-            next();
-        } else {
-            next("/login");//否足额跳转到登陆界面
-            errorTips(LANG.AUTH.LOGIN.NO_LOGIN)
-        }
-
-    } else {
-        next();
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     if (to.meta.isAuth) {//该页面是否需要跳转
+//
+//         if (window.localStorage.getItem(globalConfig.tokenAddress)) {//用户是否携带token
+//             next();
+//         } else {
+//             next("/login");//否足额跳转到登陆界面
+//             errorTips(LANG.AUTH.LOGIN.NO_LOGIN)
+//         }
+//
+//     } else {
+//         next();
+//     }
+// });
 
 export default router;
