@@ -53,7 +53,7 @@ export default {
 .sideBar-list {
   /*background: aquamarine;*/
   height: 900px;
-  width: 280px;
+  width: 300px;
 }
 
 .sideBar-msg-list {
@@ -72,24 +72,8 @@ export default {
   background: rgb(242, 242, 242);
 }
 
-.chat-search {
-  display: flex;
-  align-items: center;
-  height: 25px;
-  padding: 10px;
-}
-
-.chat-add {
-  padding: 3px 3px;
-  margin: 3px 3px;
-  width: 17px;
-  height: 17px;
-}
-
 .chat-add:hover {
   background: rgb(245, 245, 245);
-  height: 900px;
-  width: 300px;
 }
 
 .sideBar-msg-list {
