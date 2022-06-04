@@ -1,25 +1,45 @@
 <template>
   <common-page>
     <template v-slot:default>
-      <div class="chat-big-box">
+      <div class="chat-big-box fade-in-fwd">
         <!--聊天页面容器 -->
-        <el-container style="border-radius: 5%">
+        <el-container>
           <!--聊天左边侧边栏-->
+
           <el-aside width="400px">
             <chat-side-bar/>
           </el-aside>
+
           <!--聊天页面右边容器-->
           <el-container>
-            <!--聊天右边页面头部-->
-            <el-header>
-              Header
+
+            <!--聊天页面头部-->
+            <el-header class="border-bottom-light chat-header-box gray-box">
+              <chat-msg-header/>
             </el-header>
-            <!--聊天右边页面聊天消息页面-->
-            <el-main>Main</el-main>
-            <!--聊天右边页面底部消息输入框-->
-            <el-footer height="200px">
-              Footer
-            </el-footer>
+
+            <el-container>
+
+              <el-container>
+                <!--聊天页面聊天消息页面-->
+                <el-main class="chat-message-box gray-box">
+                  <chat-msg-main/>
+                </el-main>
+
+                <!--聊天页面底部-->
+                <el-footer class="chat-foot-box border-top-light gray-box" height="200px">
+                  <chat-msg-foot/>
+                </el-footer>
+              </el-container>
+
+              <el-aside
+                  class="border-left-light chat-right-sideBar gray-box"
+                  width="200px"
+              >
+
+              </el-aside>
+
+            </el-container>
 
           </el-container>
 
@@ -38,10 +58,16 @@ import {useRouter} from "vue-router";
 import {LANG} from "@/config/lang";
 import {errorTips, successTips} from "@/utils/messageTips";
 import chatSideBar from "@/components/chat/sideBar/chatSideBar";
+import ChatMsgHeader from "@/components/chat/mainBar/chatMsgHeader";
+import ChatMsgFoot from "@/components/chat/mainBar/chatMsgFoot";
+import ChatMsgMain from "@/components/chat/mainBar/chatMsgMain";
 
 export default {
   name: "chatIndex",
   components: {
+    ChatMsgMain,
+    ChatMsgFoot,
+    ChatMsgHeader,
     CommonPage,
     chatSideBar
   },

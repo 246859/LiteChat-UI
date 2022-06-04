@@ -1,9 +1,35 @@
-.chat-big-box {
+.chat-big-box { /*大聊天盒子*/
     display: flex;
     background: white;
     height: 900px;
     width: 1300px;
     box-shadow: 3px 4px 30px grey;
-    border-radius: 3%;
+    border-radius: 15px;
 
+}
+
+.gray-box {
+    background: rgb(245, 246, 247);
+}
+
+.chat-header-box {
+
+    border-top-right-radius: 16px;
+}
+
+.chat-message-box {
+
+}
+
+.chat-foot-box {
+    border-bottom-right-radius: 16px;
+}
+
+.chat-right-sideBar {
+    border-bottom-right-radius: 16px;
+}
+
+
+.color-hover-grey:hover {
+    background: rgb(231, 232, 233);
 }

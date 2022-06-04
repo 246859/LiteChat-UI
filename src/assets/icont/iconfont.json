@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "11937086",
+      "name": "文件",
+      "font_class": "wenjian",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "18170169",
+      "name": "齿轮,设置,设定",
+      "font_class": "set",
+      "unicode": "e979",
+      "unicode_decimal": 59769
+    },
+    {
       "icon_id": "592049",
       "name": "菜单",
       "font_class": "caidan",
