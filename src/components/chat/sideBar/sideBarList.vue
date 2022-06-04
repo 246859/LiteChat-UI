@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import ChatMsgCard from "@/components/chat/sideBar/chatMsgListCard";
+import ChatMsgCard from "@/components/chat/sideBar/chatMsgCard";
 import {Search} from '@element-plus/icons-vue'
 import Icon from "@/components/common/icon";
 import "../../../assets/style/common.css";
@@ -42,24 +42,52 @@ export default {
   name: "sideBarList",
   components: {Icon, ChatMsgCard},
   setup() {
-
-    let content = ""
-
     return {
-      Search,
-      content,
+      Search
     }
   }
 }
 </script>
 
 <style scoped>
-* {
-  user-select: none;
-}
-
 .sideBar-list {
   /*background: aquamarine;*/
+  height: 900px;
+  width: 280px;
+}
+
+.sideBar-msg-list {
+  height: 853px;
+}
+
+.sideBar-msg-list :hover {
+  cursor: default;
+}
+
+.msg-list li {
+  padding: 14px 20px 14px 15px;
+}
+
+.msg-list li:hover {
+  background: rgb(242, 242, 242);
+}
+
+.chat-search {
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 10px;
+}
+
+.chat-add {
+  padding: 3px 3px;
+  margin: 3px 3px;
+  width: 17px;
+  height: 17px;
+}
+
+.chat-add:hover {
+  background: rgb(245, 245, 245);
   height: 900px;
   width: 300px;
 }
