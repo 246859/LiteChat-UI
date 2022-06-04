@@ -22,11 +22,19 @@
         <icon class="sideBar-icon" symbol="icon-pengyouquan" @click="colorChange(3)"></icon>
       </li>
 
-      <!--轻享空间-->
+      <!--账号设置-->
       <li class="sideBar-foot-menu">
-        <icon class="sideBar-icon" symbol="icon-caidan"></icon>
+        <el-dropdown trigger="click">
+          <icon class="sideBar-icon" symbol="icon-caidan"></icon>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>个人信息</el-dropdown-item>
+              <el-dropdown-item>安全设置</el-dropdown-item>
+              <el-dropdown-item>退出账号</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </li>
-
     </ul>
   </div>
 </template>
@@ -41,10 +49,11 @@ export default {
   name: "sideBarMenu",
   components: {Icon},
   setup() {
-    const message = ref(null);
-    const friend = ref(null);
-    const group = ref(null);
-    const liteZone = ref(null);
+    const message = ref();
+    const friend = ref();
+    const group = ref();
+    const liteZone = ref();
+    const dropdownMenu = ref();
 
     const clickClass = "sideBar-icon-click";
     const sideBarKey = "siderBar-menu";
@@ -52,7 +61,7 @@ export default {
     const menu = [message, friend, group, liteZone];
 
     function colorChange(index) {//点击元素 变色保留
-      
+
       menu[index].value.classList.add(clickClass);
 
       menu.forEach(other => {
@@ -64,7 +73,6 @@ export default {
     }
 
     onMounted(() => {
-      console.log(friend.value)
       let index = sessionStorage.getItem(sideBarKey);
 
       if (index) {
@@ -78,7 +86,8 @@ export default {
       message,
       friend,
       group,
-      liteZone
+      liteZone,
+      dropdownMenu
     }
   }
 }
@@ -117,6 +126,6 @@ ul li {
 }
 
 .sideBar-foot-menu {
-  padding-top: 380px;
+  padding-top: 415px;
 }
 </style>

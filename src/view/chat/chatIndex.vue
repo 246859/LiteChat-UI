@@ -1,7 +1,7 @@
 <template>
   <common-page>
     <template v-slot:default>
-      <div class="chat-big-box">
+      <div class="chat-big-box fade-in-fwd">
         <!--聊天页面容器 -->
         <el-container style="border-radius: 5%">
           <!--聊天左边侧边栏-->
