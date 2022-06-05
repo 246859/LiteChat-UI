@@ -2,7 +2,7 @@
   <div class="sideBar-list border-right-light">
     <div class="border-bottom-light chat-search">
       <el-input
-          v-model="content"
+          v-model="searchContent"
           :prefix-icon="Search"
           class="w-50 m-2"
           size="small"
@@ -22,8 +22,13 @@
     <div class="sideBar-msg-list">
       <el-scrollbar height="840px">
         <ul class="msg-list">
-          <li v-for="i in 100">
-            <chat-msg-card/>
+          <li v-for="msg in sideMessageList">
+            <side-msg-card
+                :avatar="msg.avatar"
+                :message="msg.message"
+                :sender="msg.sender"
+                :time="msg.time"
+            />
           </li>
         </ul>
       </el-scrollbar>
@@ -33,23 +38,196 @@
 </template>
 
 <script>
-import ChatMsgCard from "@/components/chat/sideBar/chatMsgCard";
+import ChatMsgCard from "@/components/chat/sideBar/sideMsgCard";
+import SideMsgCard from "@/components/chat/sideBar/sideMsgCard";
 import {Search} from '@element-plus/icons-vue'
 import Icon from "@/components/common/icon";
 import "../../../assets/style/common.css";
+import {reactive, ref} from "vue";
 
 export default {
   name: "sideBarList",
-  components: {Icon, ChatMsgCard},
+  components: {SideMsgCard, Icon, ChatMsgCard},
   setup() {
+    let searchContent = ref("");
+    const sideMessageList = reactive([
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      }, {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      }, {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      }, {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      }, {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      }, {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      }, {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+      {
+        avatar: require('../../../assets/img/avatar/jojo.jpg'),
+        sender: '半岛小镇服务器群聊',
+        message: '我的梦想是成为一个秧歌star!',
+        time: '0:50'
+      },
+    ]);
     return {
-      Search
+      Search,
+      searchContent,
+      sideMessageList
     }
   }
 }
 </script>
 
 <style scoped>
+* {
+  user-select: none;
+}
+
 .sideBar-list {
   /*background: aquamarine;*/
   height: 900px;
@@ -96,7 +274,7 @@ export default {
   display: flex;
   align-items: center;
   height: 39px;
-  padding: 10px;
+  padding: 10px 10px 10px 24px;
 }
 
 .chat-add {

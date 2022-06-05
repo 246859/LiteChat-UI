@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7629084",
+      "name": "消息",
+      "font_class": "xiaoxi2",
+      "unicode": "e6c0",
+      "unicode_decimal": 59072
+    },
+    {
+      "icon_id": "18781759",
+      "name": "成员",
+      "font_class": "chengyuan",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
       "icon_id": "11937086",
       "name": "文件",
       "font_class": "wenjian",

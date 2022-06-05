@@ -16,6 +16,7 @@ export default {
   display: flex;
   height: 50px;
   padding: 10px 140px;
+  justify-content: center;
 }
 
 .container-header img {
@@ -28,5 +29,9 @@ export default {
   font-size: 25px;
   margin: 0 5px;
   color: black;
+}
+
+* {
+  user-select: none;
 }
 </style>

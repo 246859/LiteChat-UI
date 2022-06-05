@@ -149,36 +149,20 @@
     text-overflow: ellipsis; /*当对象内文本溢出时显示省略标记（...）*/
 }
 
-.scale-in-ver-top {
-    animation: scale-in-ver-top .5s cubic-bezier(.25, .46, .45, .94) both
+.tracking-in-contract-bck {
+    animation: tracking-in-contract-bck 1s cubic-bezier(.215, .61, .355, 1.000) both
 }
 
-@keyframes scale-in-ver-top {
+
+@keyframes tracking-in-contract-bck {
     0% {
-        -webkit-transform: scaleY(0);
-        transform: scaleY(0);
-        -webkit-transform-origin: 100% 0;
-        transform-origin: 100% 0;
-        opacity: 1
-    }
-    100% {
-        -webkit-transform: scaleY(1);
-        transform: scaleY(1);
-        -webkit-transform-origin: 100% 0;
-        transform-origin: 100% 0;
-        opacity: 1
-    }
-}
-
-.fade-in-fwd {
-    animation: fade-in-fwd .6s cubic-bezier(.39, .575, .565, 1.000) both
-}
-
-@keyframes fade-in-fwd {
-    0% {
-        -webkit-transform: translateZ(-80px);
-        transform: translateZ(-80px);
+        letter-spacing: 1em;
+        -webkit-transform: translateZ(400px);
+        transform: translateZ(400px);
         opacity: 0
+    }
+    40% {
+        opacity: .6
     }
     100% {
         -webkit-transform: translateZ(0);
@@ -186,5 +170,4 @@
         opacity: 1
     }
 }
-
 

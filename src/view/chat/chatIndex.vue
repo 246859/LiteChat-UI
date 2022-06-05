@@ -10,8 +10,12 @@
             <chat-side-bar/>
           </el-aside>
 
-          <!--聊天页面右边容器-->
+          <!--默认聊天首页-->
           <el-container>
+            <introduction/>
+          </el-container>
+          <!--聊天页面右边容器-->
+          <el-container v-if="false">
 
             <!--聊天页面头部-->
             <el-header class="border-bottom-light chat-header-box gray-box">
@@ -22,9 +26,11 @@
 
               <el-container>
                 <!--聊天页面聊天消息页面-->
-                <el-main class="chat-message-box gray-box">
-                  <chat-msg-main/>
-                </el-main>
+                <el-scrollbar ref="sc" height="640px">
+                  <el-main class="chat-message-box gray-box">
+                    <chat-msg-main/>
+                  </el-main>
+                </el-scrollbar>
 
                 <!--聊天页面底部-->
                 <el-footer class="chat-foot-box border-top-light gray-box" height="200px">
@@ -32,10 +38,12 @@
                 </el-footer>
               </el-container>
 
-              <el-aside
-                  class="border-left-light chat-right-sideBar gray-box"
-                  width="200px"
-              >
+              <!--群聊成员列表-->
+              <el-aside v-if="false"
+                        class="border-left-light chat-right-sideBar gray-box"
+                        width="200px">
+
+                <group-member-list/>
 
               </el-aside>
 
@@ -61,10 +69,15 @@ import chatSideBar from "@/components/chat/sideBar/chatSideBar";
 import ChatMsgHeader from "@/components/chat/mainBar/chatMsgHeader";
 import ChatMsgFoot from "@/components/chat/mainBar/chatMsgFoot";
 import ChatMsgMain from "@/components/chat/mainBar/chatMsgMain";
+import {onMounted, ref} from "vue";
+import GroupMemberList from "@/components/chat/mainBar/groupMemberList";
+import Introduction from "@/components/chat/mainBar/introduction";
 
 export default {
   name: "chatIndex",
   components: {
+    Introduction,
+    GroupMemberList,
     ChatMsgMain,
     ChatMsgFoot,
     ChatMsgHeader,
@@ -74,6 +87,7 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();
+    const sc = ref();
 
     function logout() {//用户退出登陆
       authStore.logout().then(res => {
@@ -87,8 +101,13 @@ export default {
       });
     }
 
+    onMounted(() => {
+      console.log(sc);
+    })
+
     return {
-      logout
+      logout,
+      sc
     }
   }
 }

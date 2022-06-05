@@ -1,21 +1,40 @@
 <template>
   <div class="msg-card">
-    <img alt="消息头像" class="msg-avatar" src="../../../assets/img/avatar/jojo.jpg">
+    <img :src="avatar" alt="消息头像" class="msg-avatar">
     <div class="msg-content">
       <div class="msg-title">
-        <p class="msg-name text-hidden">半岛小镇养QAQ老基地</p>
-        <p class="msg-sender text-hidden">wyh:什么牛马，我看到个很牛逼的东西</p>
+        <p class="msg-name text-hidden">{{ sender }}</p>
+        <p class="msg-sender text-hidden">{{ message }}</p>
       </div>
-      <p class="msg-time">11:53</p>
+      <p class="msg-time">{{ time }}</p>
     </div>
   </div>
 </template>
 
 <script>
 import "../../../assets/style/common.css";
+import {reactive} from "vue";
 
 export default {
-  name: "chatMsgCard"
+  name: "sideMessageList",
+  props: {
+    avatar: String,
+    sender: String,
+    message: String,
+    time: String
+  },
+  setup(props) {
+    const data = reactive({
+      avatar: props.avatar,
+      sender: props.sender,
+      message: props.message,
+      time: props.time
+    });
+
+    return {
+      ...data
+    }
+  }
 }
 </script>
 

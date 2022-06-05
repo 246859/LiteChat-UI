@@ -7,7 +7,7 @@
       </li>
       <!--消息列表-->
       <li ref="message">
-        <icon class="sideBar-icon" symbol="icon-xiaoxi" @click="colorChange(0)"/>
+        <icon class="sideBar-icon" symbol="icon-xiaoxi2" @click="colorChange(0)"/>
       </li>
       <!--好友列表-->
       <li ref="friend">
