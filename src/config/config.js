@@ -11,5 +11,13 @@ export const globalConfig = {
             }
         }
     },
+    page: {
+        side_menu: "siderBar-menu",
+        sideBarMenuField: [0, 1, 2, 3]
+    },
+    ws: {
+        url: "ws://localhost:8088/Message"
+    },
     tokenAddress: "94a2776e7bd6f611462bc4344e17773c65fc4c486401643b724d102a8936dff4",
+    nickNameAddress: "nickName",
 }

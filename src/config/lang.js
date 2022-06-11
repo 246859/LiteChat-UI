@@ -22,6 +22,12 @@ export const LANG = {
             FAIL: "响应失败:"
         }
     },
+    NET_WORK: {
+        STATUS: {
+            OK: 200,
+            ERROR: 400
+        }
+    },
     FORM: {
         PASSWORD: {
             ENTER: "请输入密码",
@@ -42,5 +48,13 @@ export const LANG = {
             ENTER: "请输入昵称",
             BEYOND_LENGTH: "昵称长度须大于3个字符且小于15个字符"
         }
+    },
+    WS: {
+        DISCONNECT: "连接失效,请重新登陆",
+        ERROR: "状态异常,请刷新页面"
+    },
+    CHAT: {
+        BLANK_MSG: "不能发送空白消息",
     }
 }
+

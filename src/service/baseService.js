@@ -5,7 +5,8 @@ import {LANG} from "@/config/lang";
 
 export const service = axios.create({
     baseURL: globalConfig.request.base_url
-})
+});
+
 service.interceptors.request.use(config => {//拦截每一次请求,如果本地存在Token的话则将请求头中加上Token
     let token = window.localStorage.getItem(globalConfig.tokenAddress);
     if (token) {
@@ -24,7 +25,7 @@ service.interceptors.response.use(function (response) {//拦截每一次服务�
     let data = response.data.data;
     let token = data ? data.token : undefined;
     if (token) {//如果响应中携带有token,将其存入localStorage中
-        window.localStorage.setItem(globalConfig.tokenAddress, token)
+        localStorage.setItem(globalConfig.tokenAddress, token)
     }
 
     return response;

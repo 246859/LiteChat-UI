@@ -23,7 +23,7 @@
   <!--底部功能-->
 
   <div class="foot-button">
-    <el-button class="button-size" type="primary">发送</el-button>
+    <el-button class="button-size" type="primary" @click="sendMsg">发送</el-button>
   </div>
 </template>
 
@@ -31,14 +31,33 @@
 import Icon from "@/components/common/icon";
 import "../../../assets/style/common.css";
 import {ref} from "vue";
+import {useChatStore} from "@/sotre/chatStore";
+import {infoTips} from "@/utils/messageTips";
+import {LANG} from "@/config/lang";
 
 export default {
   name: "chatMsgFoot",
   components: {Icon},
   setup() {
+    const chatStore = useChatStore();
     let msg = ref("");
+
+    function sendMsg() {
+      if (msg.value !== "") {
+
+        chatStore.sendMessage({
+          message: msg.value
+        });
+
+        msg.value = "";
+      } else {
+        infoTips(LANG.CHAT.BLANK_MSG);
+      }
+    }
+
     return {
-      msg
+      msg,
+      sendMsg
     }
   }
 }

@@ -30,7 +30,23 @@
             <el-dropdown-menu>
               <el-dropdown-item>个人信息</el-dropdown-item>
               <el-dropdown-item>安全设置</el-dropdown-item>
-              <el-dropdown-item>退出账号</el-dropdown-item>
+
+              <el-dropdown-item>
+                <el-popconfirm
+                    cancel-button-text="取消"
+                    confirm-button-text="确认"
+                    hide-icon
+                    title="确认要退出登陆吗?"
+                    @confirm="logout"
+                >
+                  <template #reference>
+                   <span style="font-size: 14px">
+                     退出登陆
+                   </span>
+                  </template>
+                </el-popconfirm>
+              </el-dropdown-item>
+
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -43,7 +59,14 @@
 import Icon from "@/components/common/icon";
 import '../../../assets/style/common.css';
 import {onMounted, ref} from "vue";
-import {sessionStorage} from "@/utils/storage";
+import {clearToken, sessionStorage} from "@/utils/storage";
+import {useChatStore} from "@/sotre/chatStore";
+import {useRouter} from "vue-router";
+import {globalConfig} from "@/config/config";
+import {logoutService} from "@/view/chat/service/chatService";
+import {successTips} from "@/utils/messageTips";
+import {LANG} from "@/config/lang";
+import {useAuthStore} from "@/sotre/authStore";
 
 export default {
   name: "sideBarMenu",
@@ -54,9 +77,11 @@ export default {
     const group = ref();
     const liteZone = ref();
     const dropdownMenu = ref();
+    const chatStore = useChatStore();
+    const authStore = useAuthStore();
+    const router = useRouter();
 
     const clickClass = "sideBar-icon-click";
-    const sideBarKey = "siderBar-menu";
 
     const menu = [message, friend, group, liteZone];
 
@@ -69,16 +94,31 @@ export default {
           other.value.classList.remove(clickClass);
         }
       });
-      sessionStorage.setItem(sideBarKey, index);
+
+      index === 0 ?
+          router.push({name: "chatPage"}) :
+          router.push({name: "introduce"});
+
+      sessionStorage.setItem(globalConfig.page.side_menu, index);//存入session 刷新时从session中读取
+    }
+
+    function logout() {//用户退出登陆
+      logoutService().then(res => {
+        if (res.data.code === LANG.NET_WORK.STATUS.OK) {
+          authStore.clearCache();
+          router.push({name: "login"});
+          successTips(LANG.AUTH.LOGOUT.OK);
+        } else {
+          successTips(res.data.msg);
+        }
+      });
     }
 
     onMounted(() => {
-      let index = sessionStorage.getItem(sideBarKey);
-
-      if (index) {
+      let index;
+      if ((index = sessionStorage.getItem(globalConfig.page.side_menu)) in globalConfig.page.sideBarMenuField) {
         colorChange(Number.parseInt(index));
       }
-
     });
 
     return {
@@ -87,7 +127,8 @@ export default {
       friend,
       group,
       liteZone,
-      dropdownMenu
+      dropdownMenu,
+      logout,
     }
   }
 }
@@ -127,5 +168,9 @@ ul li {
 
 .sideBar-foot-menu {
   padding-top: 415px;
+}
+
+:deep(.el-popconfirm__main) {
+  justify-content: center;
 }
 </style>

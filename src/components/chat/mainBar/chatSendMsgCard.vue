@@ -21,28 +21,30 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
+import {getUserNameFromToken} from "@/utils/storage";
 
 export default {
   name: "chatSendMsgCard",
   props: {
-    isSelf: Boolean,
-    avatar: String,
     sender: String,
+    avatar: String,
+    nickName: String,
     message: String
   },
   setup(props) {
 
     let src = "../../../assets/img/avatar/jojo.jpg";
 
-    const data = reactive({
-      isSelf: props.isSelf,
-      avatar: props.avatar,
-      sender: props.sender,
-      message: props.message
-    });
-
+    const userName = getUserNameFromToken();//从token中的payload获取用户名
     const sendBox = ref();
     const msgBox = ref();
+
+    const data = reactive({
+      isSelf: props.sender === userName,
+      avatar: props.avatar,
+      sender: props.nickName,
+      message: props.message
+    });
 
     onMounted(() => {
       if (data.isSelf) {

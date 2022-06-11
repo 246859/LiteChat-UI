@@ -3,6 +3,7 @@ import {loginService} from "@/view/login/service/loginService";
 import {registerService} from "@/view/register/service/registerService";
 import {logoutService} from "@/view/chat/service/chatService";
 import sha1 from 'crypto-js/sha256';
+import {clearNickName, clearToken} from "@/utils/storage";
 
 //登陆和注册全局状态管理
 export const useAuthStore = defineStore('authStore', {
@@ -45,6 +46,10 @@ export const useAuthStore = defineStore('authStore', {
         },
         logout() {
             return logoutService();
+        },
+        clearCache() {//清空在浏览器的缓存
+            clearToken();
+            clearNickName();
         }
     },
     getters: {}
