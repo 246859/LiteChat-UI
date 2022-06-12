@@ -31,5 +31,13 @@
 
 
 .color-hover-grey:hover {
-    background: rgb(231, 232, 233);
+    background: rgb(242, 242, 242);
+}
+
+.sideBar-msg-list {
+    height: 840px;
+}
+
+.sideBar-msg-list :hover {
+    cursor: default;
 }

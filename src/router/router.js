@@ -51,15 +51,18 @@ const router = createRouter({
 
 // 前置路由守卫
 router.beforeEach((to, from, next) => {
+    let isHasToken = localStorage.getItem(globalConfig.tokenAddress);
     if (to.meta.isAuth) {//该页面是否需要跳转
 
-        if (window.localStorage.getItem(globalConfig.tokenAddress)) {//用户是否携带token
+        if (isHasToken) {//用户是否携带token
             next();
         } else {
             next("/login");//否足额跳转到登陆界面
             errorTips(LANG.AUTH.LOGIN.NO_LOGIN)
         }
 
+    } else if ((to.name === 'login' || to.name === 'register') && isHasToken) {
+        next('/chatIndex');
     } else {
         next();
     }

@@ -99,6 +99,8 @@ export default {
           router.push({name: "chatPage"}) :
           router.push({name: "introduce"});
 
+      chatStore.sidePage.pageFlag = index;
+
       sessionStorage.setItem(globalConfig.page.side_menu, index);//存入session 刷新时从session中读取
     }
 

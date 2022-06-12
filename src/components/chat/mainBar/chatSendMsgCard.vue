@@ -6,7 +6,7 @@
     </div>
     <div class="send-msg-box">
       <!--名称      -->
-      <div ref="sender" class="send-msg-name">{{ sender }}</div>
+      <div ref="sender" class="send-msg-name">{{ senderNickName }}</div>
       <!--消息气泡-->
       <div ref="msgBox" class="send-content-box">
         {{ message }}
@@ -42,9 +42,10 @@ export default {
     const data = reactive({
       isSelf: props.sender === userName,
       avatar: props.avatar,
-      sender: props.nickName,
+      senderNickName: props.nickName,
       message: props.message
     });
+
 
     onMounted(() => {
       if (data.isSelf) {

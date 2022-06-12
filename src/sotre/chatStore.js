@@ -10,6 +10,9 @@ export const useChatStore = defineStore('chatStore', {
     state: () => {
         return {
             wsClient: null,
+            sidePage: {
+                pageFlag: 0
+            },
             chattingMsgList: [],
             messageList: [
                 {

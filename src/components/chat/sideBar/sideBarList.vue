@@ -11,213 +11,113 @@
         <icon class="chat-add" symbol="icon-tianjia"></icon>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>添加好友</el-dropdown-item>
-            <el-dropdown-item>添加群聊</el-dropdown-item>
-            <el-dropdown-item>创建群聊</el-dropdown-item>
+            <el-dropdown-item @click="add('friend')">添加好友</el-dropdown-item>
+            <el-dropdown-item @click="add('group')">添加群聊</el-dropdown-item>
+            <el-dropdown-item @click="add('createGroup')">创建群聊</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
 
+    <!--页面切换-->
     <div class="sideBar-msg-list">
       <el-scrollbar height="840px">
-        <ul class="msg-list">
-          <li v-for="msg in sideMessageList">
-            <side-msg-card
-                :avatar="msg.avatar"
-                :message="msg.message"
-                :sender="msg.sender"
-                :time="msg.time"
-            />
-          </li>
-        </ul>
+        <side-bar-msg-list v-if="pageFlag === 0"/>
+        <side-bar-friend-list v-if="pageFlag === 1"/>
+        <side-bar-group-list v-if="pageFlag === 2"/>
       </el-scrollbar>
     </div>
-
   </div>
+
+  <el-dialog
+      v-model="dialogVisible"
+      :title="dialogTitle"
+      center
+  >
+    <div class="add-dialog-foot">
+      <el-input
+          v-model="searchContent"
+          :placeholder="dialogPlaceholder"
+          :prefix-icon="Search"
+          class="w-50 m-2"
+          placeholder=""
+          size="small"
+      />
+      <el-button class="add-button">
+        {{ addButtonContent }}
+      </el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
-import ChatMsgCard from "@/components/chat/sideBar/sideMsgCard";
-import SideMsgCard from "@/components/chat/sideBar/sideMsgCard";
 import {Search} from '@element-plus/icons-vue'
 import Icon from "@/components/common/icon";
 import "../../../assets/style/common.css";
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
+import SideBarMsgList from "@/components/chat/sideBar/sideBarMsgList";
+import '../../../assets/style/chatPage.css';
+import SideBarFriendList from "@/components/chat/sideBar/sideBarFriendList";
+import SideBarGroupList from "@/components/chat/sideBar/sideBarGroupList";
+import {useChatStore} from "@/sotre/chatStore";
+import {globalConfig} from "@/config/config";
 
 export default {
   name: "sideBarList",
-  components: {SideMsgCard, Icon, ChatMsgCard},
+  components: {
+    SideBarGroupList
+    , SideBarFriendList, SideBarMsgList, Icon,
+  },
   setup() {
+    //因最初设计不佳，这里只能采用通过响应式切换侧边栏界面
+    const chatStore = useChatStore();
+    let pageFlag = ref(Number.parseInt(sessionStorage.getItem(globalConfig.page.side_menu)));
     let searchContent = ref("");
-    const sideMessageList = reactive([
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      }, {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      }, {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      }, {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      }, {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      }, {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      }, {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        sender: '半岛小镇服务器群聊',
-        message: '我的梦想是成为一个秧歌star!',
-        time: '0:50'
-      },
-    ]);
+    let addContent = ref("");
+    let dialogVisible = ref(false);
+    let dialogTitle = ref("");
+    let dialogPlaceholder = ref("");
+    let addButtonContent = ref("");
+
+    chatStore.$subscribe((mutation, state) => {
+      pageFlag.value = state.sidePage.pageFlag;
+    });
+
+    function add(type) {
+      dialogVisible.value = true;
+      switch (type) {
+        case "friend": {
+          dialogTitle.value = "添加好友"
+          dialogPlaceholder.value = "输入对方的用户名"
+          addButtonContent.value = "查找"
+        }
+          break;
+        case "group": {
+          dialogTitle.value = "添加群聊"
+          dialogPlaceholder.value = "输入对应的群号"
+          addButtonContent.value = "查找"
+        }
+          break;
+        case "createGroup": {
+          dialogTitle.value = "创建群聊"
+          dialogPlaceholder.value = "输入群聊的名称"
+          addButtonContent.value = "创建"
+        }
+          break;
+      }
+
+    }
+
     return {
       Search,
+      pageFlag,
+      add,
       searchContent,
-      sideMessageList
+      addContent,
+      dialogVisible,
+      dialogTitle,
+      dialogPlaceholder,
+      addButtonContent
     }
   }
 }
@@ -234,13 +134,6 @@ export default {
   width: 300px;
 }
 
-.sideBar-msg-list {
-  height: 853px;
-}
-
-.sideBar-msg-list :hover {
-  cursor: default;
-}
 
 .msg-list li {
   padding: 14px 20px 14px 15px;
@@ -252,22 +145,6 @@ export default {
 
 .chat-add:hover {
   background: rgb(245, 245, 245);
-}
-
-.sideBar-msg-list {
-  height: 840px;
-}
-
-.sideBar-msg-list :hover {
-  cursor: default;
-}
-
-.msg-list li {
-  padding: 17px 20px 17px 15px;
-}
-
-.msg-list li:hover {
-  background: rgb(242, 242, 242);
 }
 
 .chat-search {
@@ -286,6 +163,29 @@ export default {
 
 .chat-add:hover {
   background: rgb(245, 245, 245);
+}
+
+.add-dialog-foot {
+  display: flex;
+}
+
+.add-button {
+  background: rgb(30, 111, 255);
+  color: white;
+  margin-left: 10px;
+}
+
+.add-button:hover {
+  background: rgb(83, 145, 255);
+  color: white;
+}
+
+:deep(.el-button>span) {
+  font-size: 14px;
+}
+
+:deep(.el-input__inner) {
+  font-size: 13px;
 }
 
 </style>
