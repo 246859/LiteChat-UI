@@ -3,7 +3,8 @@ export const LANG = {
         LOGIN: {
             NO_LOGIN: "用户未登陆",
             OK: "登陆成功",
-            FAIL: "登陆失败"
+            FAIL: "登陆失败",
+            TIME_OUT: "用户认证已过期,请重新登陆"
         },
         REGISTER: {
             OK: "注册成功",

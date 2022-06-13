@@ -2,13 +2,13 @@
   <!--工具栏-->
   <div>
     <ul>
-      <li class="color-hover-grey">
+      <li class="color-hover-deep-grey">
         <icon class="foot-icon" symbol="icon-xiaolian"/>
       </li>
-      <li class="color-hover-grey">
+      <li class="color-hover-deep-grey">
         <icon class="foot-icon" symbol="icon-icon"/>
       </li>
-      <li class="color-hover-grey">
+      <li class="color-hover-deep-grey">
         <icon class="foot-icon" symbol="icon-wenjian"/>
       </li>
     </ul>

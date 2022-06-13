@@ -71,6 +71,8 @@ export default {
 }
 
 .msg-sender {
+  margin-top: 10px;
+  height: 20px;
   font-size: 14px;
   color: rgb(127, 127, 127);
 }

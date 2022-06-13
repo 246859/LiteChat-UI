@@ -1,12 +1,13 @@
 <template>
   <div class="chat-header">
-    <h5 class="message-sender text-hidden">{{ temp }}</h5>
+    <h5 class="message-sender text-hidden">{{ conversationName }}</h5>
     <el-dropdown trigger="click">
       <icon class="chat-set" symbol="icon-set"></icon>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>查看资料</el-dropdown-item>
-          <el-dropdown-item>退出该群</el-dropdown-item>
+          <el-dropdown-item>关闭会话</el-dropdown-item>
+          <el-dropdown-item>{{ isGroup ? "退出该群" : "删除好友" }}</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -15,14 +16,40 @@
 
 <script>
 import Icon from "@/components/common/icon";
+import {useChatStore} from "@/sotre/chatStore";
+import {onMounted, ref} from "vue";
+import {globalConfig} from "@/config/config";
 
 export default {
   name: "chatMsgHeader",
   components: {Icon},
   setup() {
-    const temp = "半岛小镇养老基地";
+    const chatStore = useChatStore();
+    //缓存会话名称
+    let conversationName = ref(chatStore.chatting.conversationName);
+    let isGroup = ref(chatStore.chatting.isGroup);
+    let receiver = ref(chatStore.chatting.receiver);
+
+
+    let chatting = sessionStorage.getItem(globalConfig.page.chatting);
+
+    if (chatting) {
+      chatting = JSON.parse(chatting);//将缓存的字符串读取json对象
+      chatStore.chatting.conversationName = chatting.conversationName;
+      chatStore.chatting.isGroup = chatting.isGroup;
+    }
+
+    //订阅state变化
+    chatStore.$subscribe((mutation, state) => {
+      if (state.chatting.receiver !== receiver) {//当前聊天对象发生了变化,则重新读取数据
+        conversationName.value = state.chatting.conversationName;
+        isGroup.value = state.chatting.isGroup;
+      }
+    });
+
     return {
-      temp
+      conversationName,
+      isGroup
     }
   }
 }

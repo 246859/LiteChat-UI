@@ -36,8 +36,8 @@ export default {
 }
 
 .group-member-icon {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   color: rgb(90, 156, 248);
 }
 

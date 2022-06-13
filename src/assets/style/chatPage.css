@@ -34,6 +34,10 @@
     background: rgb(242, 242, 242);
 }
 
+.color-hover-deep-grey:hover {
+    background: rgb(231, 231, 231);
+}
+
 .sideBar-msg-list {
     height: 840px;
 }

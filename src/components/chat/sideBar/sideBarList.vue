@@ -117,7 +117,7 @@ export default {
       dialogVisible,
       dialogTitle,
       dialogPlaceholder,
-      addButtonContent
+      addButtonContent,
     }
   }
 }

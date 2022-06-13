@@ -6,11 +6,32 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "7629084",
+      "icon_id": "10715458",
+      "name": "消息",
+      "font_class": "xiaoxi",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "11463937",
       "name": "消息",
       "font_class": "xiaoxi2",
-      "unicode": "e6c0",
-      "unicode_decimal": 59072
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "23500948",
+      "name": "消息",
+      "font_class": "xiaoxi4",
+      "unicode": "e86a",
+      "unicode_decimal": 59498
+    },
+    {
+      "icon_id": "7001851",
+      "name": "消息",
+      "font_class": "xiaoxi3",
+      "unicode": "e686",
+      "unicode_decimal": 59014
     },
     {
       "icon_id": "18781759",
@@ -39,13 +60,6 @@
       "font_class": "caidan",
       "unicode": "e790",
       "unicode_decimal": 59280
-    },
-    {
-      "icon_id": "749757",
-      "name": "消息",
-      "font_class": "xiaoxi",
-      "unicode": "e601",
-      "unicode_decimal": 58881
     },
     {
       "icon_id": "1002631",

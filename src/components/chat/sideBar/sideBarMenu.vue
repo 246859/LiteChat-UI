@@ -82,10 +82,11 @@ export default {
     const router = useRouter();
 
     const clickClass = "sideBar-icon-click";
-
     const menu = [message, friend, group, liteZone];
 
     function colorChange(index) {//点击元素 变色保留
+
+      console.log(menu[index].value)
 
       menu[index].value.classList.add(clickClass);
 
@@ -119,8 +120,18 @@ export default {
     onMounted(() => {
       let index;
       if ((index = sessionStorage.getItem(globalConfig.page.side_menu)) in globalConfig.page.sideBarMenuField) {
+        console.log("mounted")
         colorChange(Number.parseInt(index));
       }
+      //订阅pinia的状态变化
+      chatStore.$subscribe((mutation, state) => {
+        colorChange(state.sidePage.pageFlag);
+        let chatting = {
+          conversationName: state.chatting.conversationName,
+          isGroup: state.chatting.isGroup,
+        }
+        sessionStorage.setItem(globalConfig.page.chatting, JSON.stringify(chatting));
+      });
     });
 
     return {

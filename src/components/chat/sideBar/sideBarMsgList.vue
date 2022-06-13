@@ -1,10 +1,10 @@
 <template>
   <ul class="msg-list">
-    <li v-for="msg in sideMessageList">
+    <li v-for="msg in sideMessageList" @click="jumpToMessage(msg)">
       <side-msg-card
           :avatar="msg.avatar"
-          :message="msg.message"
-          :sender="msg.sender"
+          :message="msg.firstMsg"
+          :sender="msg.conversationName"
           :time="msg.time"
       />
     </li>
@@ -14,6 +14,7 @@
 <script>
 import SideMsgCard from "@/components/chat/sideBar/sideMsgCard";
 import '../../../assets/style/chatPage.css';
+import {useChatStore} from "@/sotre/chatStore";
 
 export default {
   name: "sideBarMsgList",
@@ -21,28 +22,21 @@ export default {
     SideMsgCard
   },
   setup() {
-    const sideMessageList = [
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        message: 'hhh',
-        sender: 'wyh',
-        time: '0:53'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        message: 'hhh',
-        sender: 'wyh',
-        time: '0:53'
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        message: 'hhh',
-        sender: 'wyh',
-        time: '0:53'
-      },
-    ]
+
+    const chatStore = useChatStore();
+    let sideMessageList = chatStore.messageList
+
+    const jumpToMessage = (msg) => {//传递跳转信息
+      chatStore.chatting.receiver = msg.receiver;
+      chatStore.chatting.conversationName = msg.conversationName
+      chatStore.chatting.isGroup = msg.isGroup;
+      chatStore.chatting.avatar = msg.avatar;
+      chatStore.sidePage.pageFlag = 0;
+    }
+
     return {
-      sideMessageList
+      sideMessageList,
+      jumpToMessage
     }
   }
 }

@@ -24,7 +24,7 @@
       </el-container>
 
       <!--群聊成员列表-->
-      <el-aside v-if="false"
+      <el-aside v-if="isGroup"
                 class="border-left-light chat-right-sideBar gray-box"
                 width="200px">
 
@@ -42,6 +42,9 @@ import ChatMsgMain from "@/components/chat/mainBar/chatMsgMain";
 import ChatMsgFoot from "@/components/chat/mainBar/chatMsgFoot";
 import ChatMsgHeader from "@/components/chat/mainBar/chatMsgHeader";
 import GroupMemberList from "@/components/chat/mainBar/groupMemberList";
+import {useChatStore} from "@/sotre/chatStore";
+import {onMounted, ref} from "vue";
+import {globalConfig} from "@/config/config";
 
 export default {
   name: "chatPage",
@@ -50,6 +53,29 @@ export default {
     ChatMsgFoot,
     ChatMsgHeader,
     GroupMemberList,
+  },
+  setup() {
+    const chatStore = useChatStore();
+    //缓存isGroup标志
+    let isGroup = ref(chatStore.chatting.isGroup);
+    let receiver = ref(chatStore.chatting.receiver);
+
+    let chatting = sessionStorage.getItem(globalConfig.page.chatting);
+    if (chatting) {
+      chatting = JSON.parse(chatting);
+      chatStore.chatting.isGroup = chatting.isGroup;
+    }
+
+    chatStore.$subscribe((mutation, state) => {
+      if (receiver !== state.chatting.receiver) {
+        isGroup.value = state.chatting.isGroup;
+      }
+    })
+
+    return {
+      isGroup,
+    }
+
   }
 }
 </script>

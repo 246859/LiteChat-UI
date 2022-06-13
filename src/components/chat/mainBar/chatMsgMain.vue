@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul @click="add">
+    <ul>
       <li v-for="msg in chattingMsgList">
         <chat-send-msg-card
             :avatar="require('../../../assets/img/avatar/jojo.jpg')"
@@ -25,7 +25,7 @@ export default {
   setup() {
 
     const chatStore = useChatStore();
-    let chattingMsgList = chatStore.chattingMsgList;
+    let chattingMsgList = chatStore.chatting.chattingMsgList;
 
     return {
       chattingMsgList

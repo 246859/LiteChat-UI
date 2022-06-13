@@ -1,9 +1,9 @@
 <template>
   <ul class="group-list">
-    <li v-for="group in groupList" class="color-hover-grey">
+    <li v-for="group in groupList" class="color-hover-grey" @click="jumpToMessage(group)">
       <side-obj-card
-          :avatar="group.avatar"
-          :name="group.name"
+          :avatar="require('../../../assets/img/avatar/avatar1.png')"
+          :name="group.groupName"
       />
     </li>
   </ul>
@@ -13,76 +13,44 @@
 import SideObjCard from "@/components/chat/sideBar/sideObjCard";
 import '../../../assets/style/chatPage.css';
 import {reactive} from "vue";
+import {getGroupListService} from "@/view/chat/service/chatService";
+import {useChatStore} from "@/sotre/chatStore";
+import {errorTips} from "@/utils/messageTips";
+import {getUserNameFromToken} from "@/utils/storage";
+import {useRouter} from "vue-router";
 
 export default {
   name: "sideBarGroupList",
   components: {SideObjCard},
   setup() {
-    const groupList = reactive([
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "半岛小镇养老群",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "hsy",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wml",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wyh",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "hsy",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wml",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wyh",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "hsy",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wml",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wyh",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "hsy",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wml",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wyh",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "hsy",
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "wml",
-      },
-    ]);
+    let groupList = reactive([]);
+    const router = useRouter();
+    const chatStore = useChatStore();
+
+    getGroupListService(getUserNameFromToken()).then(res => {
+      if (res.data.code === 200) {
+        groupList.push(...res.data.data)
+      } else {
+        errorTips("群聊列表加载异常");
+      }
+    }).catch(err => {
+      console.log(err)
+      errorTips("群聊请求异常");
+    });
+
+    const jumpToMessage = (group) => {//传递跳转信息
+      chatStore.chatting.receiver = group.groupId;
+      chatStore.chatting.conversationName = group.groupName
+      chatStore.chatting.isGroup = true;
+      chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar2.png");
+      chatStore.sidePage.pageFlag = 0;
+      chatStore.messageList.push({...chatStore.chatting});
+      router.push({name: "chatPage"});
+    }
 
     return {
-      groupList
+      groupList,
+      jumpToMessage
     }
   }
 }
