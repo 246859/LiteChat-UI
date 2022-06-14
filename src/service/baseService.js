@@ -2,6 +2,8 @@ import axios from "axios";
 import {globalConfig} from '@/config/config';
 import {errorTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
+import router from "@/router/router";
+import {clearToken} from "@/utils/storage";
 
 export const service = axios.create({
     baseURL: globalConfig.request.base_url
@@ -33,6 +35,10 @@ service.interceptors.response.use(function (response) {//拦截每一次服务�
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     console.log(error)
-    errorTips(LANG.AUTH.RESPONSE.FAIL + error.toString());
+    if (error.response.status === 403) {
+        errorTips("登陆身份已失效,请重新登陆")
+        router.push({name: "login"});
+        clearToken();
+    }
     return Promise.reject(error);
 });

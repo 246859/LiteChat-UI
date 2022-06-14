@@ -86,8 +86,6 @@ export default {
 
     function colorChange(index) {//点击元素 变色保留
 
-      console.log(menu[index].value)
-
       menu[index].value.classList.add(clickClass);
 
       menu.forEach(other => {
@@ -120,7 +118,6 @@ export default {
     onMounted(() => {
       let index;
       if ((index = sessionStorage.getItem(globalConfig.page.side_menu)) in globalConfig.page.sideBarMenuField) {
-        console.log("mounted")
         colorChange(Number.parseInt(index));
       }
       //订阅pinia的状态变化

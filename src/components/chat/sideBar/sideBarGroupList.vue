@@ -44,7 +44,19 @@ export default {
       chatStore.chatting.isGroup = true;
       chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar2.png");
       chatStore.sidePage.pageFlag = 0;
-      chatStore.messageList.push({...chatStore.chatting});
+
+      //在消息列表中是否已经存在
+      let index = chatStore.messageList.findIndex((msg) => {
+        return msg.receiver === group.groupId;
+      });
+
+      //如果存在则覆盖，否则添加
+      if (index > -1) {
+        chatStore.messageList[index] = {...chatStore.chatting};
+      } else {
+        chatStore.messageList.push({...chatStore.chatting});
+      }
+
       router.push({name: "chatPage"});
     }
 
