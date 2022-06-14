@@ -3,7 +3,7 @@ import {globalConfig} from "@/config/config";
 import {errorTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
 import {useRouter} from "vue-router";
-import {clearToken, getToken} from "@/utils/storage";
+import {clearToken, getToken, getUserNameFromToken} from "@/utils/storage";
 import router from "@/router/router";
 import {reactive} from "vue";
 
@@ -31,7 +31,6 @@ export const useChatStore = defineStore('chatStore', {
         connect() {//手动建立连接
             try {
                 this.wsClient = new WebSocket(`${globalConfig.ws.url}?${getToken()}`);
-
             } catch (e) {
                 clearToken();
                 errorTips(LANG.AUTH.LOGIN.TIME_OUT);
@@ -51,13 +50,65 @@ export const useChatStore = defineStore('chatStore', {
             }
         },
         onMessage(event) {
+            //ws事件
             let data = event.data;
-            console.log(event)
-            console.log(JSON.parse(data))
             if (data) {
+
+                console.log(data)
                 let msgData = JSON.parse(data);
-                this.chatting.chattingMsgList.push(msgData);
+                //数据合法校验
+                if (msgData && msgData.event && msgData.payload) {
+
+                    let payload = msgData.payload;
+
+                    let userName = getUserNameFromToken();
+
+                    switch (msgData["event"]) {
+                        case globalConfig.ws.message_event.chat: {
+                            let isNeedToRender = false;
+                            //判断接收的消息是否是正在进行的会话消息,是的话则渲染,否的话存入另外渲染
+                            if ((payload.sender === userName && payload.receiver === this.chatting.receiver) ||
+                                (payload.sender === this.chatting.receiver && payload.receiver === userName)) {
+                                this.chatting.chattingMsgList.push(payload);
+                                isNeedToRender = true
+                                console.log("当前会话消息")
+                            } else if (payload.sender !== this.chatting.receiver && payload.receiver === userName) {
+                                isNeedToRender = true;
+                                console.log("非当前会话消息")
+                            }
+
+                            if (isNeedToRender) {
+                                //消息处理成渲染格式
+                                payload.firstMsg = payload.message;
+                                payload.avatar = require('../assets/img/avatar/girl.jpg')
+
+                                //是否存在
+                                let index = this.messageList.findIndex((msg) => {
+                                    //在新消息到来时判断消息是否是正在会话的消息,或者是已经存在的消息,来决定是否在消息列表新增卡片渲染
+                                    return msg.sender === payload.sender || (msg.receiver === payload.sender && msg.sender === payload.receiver);
+                                });
+
+                                console.log(index)
+
+                                if (index > -1) {
+                                    this.messageList[index].firstMsg = payload.message
+                                } else {
+                                    this.messageList.push(payload);
+                                }
+                            }
+
+                        }
+                            break;
+                        case globalConfig.ws.message_event.info : {
+
+                        }
+                            break;
+                    }
+                }
+
             }
+
+
         },
         onClose() {
             const router = useRouter();

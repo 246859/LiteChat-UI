@@ -1,6 +1,6 @@
 <template>
   <ul class="friend-list">
-    <li v-for="friend in friendList" class="color-hover-grey" @click="jumpToMessage(friend)">
+    <li v-for="friend in friendList" class="color-hover-grey" @dblclick="jumpToMessage(friend)">
       <side-obj-card
           :avatar="require('../../../assets/img/avatar/avatar2.png')"
           :name="friend.nickName"
@@ -41,6 +41,7 @@ export default {
       chatStore.chatting.receiver = friend.userName;
       chatStore.chatting.conversationName = friend.nickName;
       chatStore.chatting.isGroup = false;
+      chatStore.chatting.sender = getUserNameFromToken();
       chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar1.png");
       chatStore.sidePage.pageFlag = 0;
 

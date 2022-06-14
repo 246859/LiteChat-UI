@@ -18,8 +18,9 @@
         <ul>
           <li v-for="member in memberList" class="color-hover-grey">
             <group-member-card
-                :avatar="member.avatar"
-                :name="member.name"
+                :avatar="require('../../../assets/img/avatar/jojo.jpg')"
+                :name="member.nickName"
+                :role="member.roleId"
             />
           </li>
         </ul>
@@ -34,26 +35,27 @@
 import GroupMemberCard from "@/components/chat/mainBar/groupMemberCard";
 import {reactive, ref} from "vue";
 import {Search} from "@element-plus/icons-vue";
+import {getGroupMembersService} from "@/view/chat/service/chatService";
+import {errorTips} from "@/utils/messageTips";
 
 export default {
   name: "groupMemberList",
   components: {GroupMemberCard},
-  setup() {
+  props: {
+    groupId: String,
+  },
+  setup(props) {
     let content = ref("");
-    let memberList = reactive([
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "乔鲁诺"
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "乔鲁诺"
-      },
-      {
-        avatar: require('../../../assets/img/avatar/jojo.jpg'),
-        name: "乔鲁诺"
+    const memberList = reactive([]);
+
+    //请求群员列表
+    getGroupMembersService(props.groupId).then(res => {
+      if (res.data.code === 200) {
+        memberList.push(...res.data.data);
       }
-    ])
+    }).catch(err => {
+      console.log(err)
+    });
 
     return {
       memberList,

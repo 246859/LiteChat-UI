@@ -85,7 +85,7 @@ export default {
     const menu = [message, friend, group, liteZone];
 
     function colorChange(index) {//点击元素 变色保留
-
+      if (!menu[index]) return
       menu[index].value.classList.add(clickClass);
 
       menu.forEach(other => {
@@ -117,18 +117,22 @@ export default {
 
     onMounted(() => {
       let index;
+      //读取sessionStorage中的缓存判断刷新页面前的状态
       if ((index = sessionStorage.getItem(globalConfig.page.side_menu)) in globalConfig.page.sideBarMenuField) {
         colorChange(Number.parseInt(index));
       }
+
       //订阅pinia的状态变化
       chatStore.$subscribe((mutation, state) => {
         colorChange(state.sidePage.pageFlag);
         let chatting = {
           conversationName: state.chatting.conversationName,
           isGroup: state.chatting.isGroup,
+          receiver: state.chatting.receiver
         }
         sessionStorage.setItem(globalConfig.page.chatting, JSON.stringify(chatting));
       });
+
     });
 
     return {

@@ -32,19 +32,19 @@ export default {
 
 
     let chatting = sessionStorage.getItem(globalConfig.page.chatting);
+    console.log(chatting)
 
     if (chatting) {
       chatting = JSON.parse(chatting);//将缓存的字符串读取json对象
-      chatStore.chatting.conversationName = chatting.conversationName;
-      chatStore.chatting.isGroup = chatting.isGroup;
+      //重新读取页面缓存的数据
+      conversationName.value = chatStore.chatting.conversationName = chatting.conversationName;
+      isGroup.value = chatStore.chatting.isGroup = chatting.isGroup;
     }
 
     //订阅state变化
     chatStore.$subscribe((mutation, state) => {
-      if (state.chatting.receiver !== receiver) {//当前聊天对象发生了变化,则重新读取数据
-        conversationName.value = state.chatting.conversationName;
-        isGroup.value = state.chatting.isGroup;
-      }
+      conversationName.value = state.chatting.conversationName;
+      isGroup.value = state.chatting.isGroup;
     });
 
     return {

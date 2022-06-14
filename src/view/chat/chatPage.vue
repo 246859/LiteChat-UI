@@ -28,7 +28,7 @@
                 class="border-left-light chat-right-sideBar gray-box"
                 width="200px">
 
-        <group-member-list/>
+        <group-member-list :group-id="receiver"/>
 
       </el-aside>
 
@@ -61,19 +61,24 @@ export default {
     let receiver = ref(chatStore.chatting.receiver);
 
     let chatting = sessionStorage.getItem(globalConfig.page.chatting);
+
     if (chatting) {
       chatting = JSON.parse(chatting);
-      chatStore.chatting.isGroup = chatting.isGroup;
+      isGroup.value = chatStore.chatting.isGroup = chatting.isGroup;
+      receiver.value = chatStore.chatting.receiver = chatting.receiver;
     }
 
+    //订阅state判断正在进行的会话
     chatStore.$subscribe((mutation, state) => {
       if (receiver !== state.chatting.receiver) {
+        receiver.value = chatStore.chatting.receiver
         isGroup.value = state.chatting.isGroup;
       }
     })
 
     return {
       isGroup,
+      receiver
     }
 
   }

@@ -1,6 +1,6 @@
 <template>
   <ul class="group-list">
-    <li v-for="group in groupList" class="color-hover-grey" @click="jumpToMessage(group)">
+    <li v-for="group in groupList" class="color-hover-grey" @dblclick="jumpToMessage(group)">
       <side-obj-card
           :avatar="require('../../../assets/img/avatar/avatar1.png')"
           :name="group.groupName"
@@ -43,12 +43,14 @@ export default {
       chatStore.chatting.conversationName = group.groupName
       chatStore.chatting.isGroup = true;
       chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar2.png");
+      chatStore.chatting.sender = getUserNameFromToken();
       chatStore.sidePage.pageFlag = 0;
 
       //在消息列表中是否已经存在
       let index = chatStore.messageList.findIndex((msg) => {
         return msg.receiver === group.groupId;
       });
+
 
       //如果存在则覆盖，否则添加
       if (index > -1) {

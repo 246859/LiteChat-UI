@@ -18,6 +18,7 @@
     <textarea
         v-model="msg"
         class="gray-box input-box"
+        @keyup.ctrl.enter="sendMsg"
     />
   </div>
   <!--底部功能-->
@@ -34,6 +35,9 @@ import {ref} from "vue";
 import {useChatStore} from "@/sotre/chatStore";
 import {infoTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
+import {getUserNameFromToken} from "@/utils/storage";
+import {globalConfig} from "@/config/config";
+import {WebSocketMessage} from "@/view/chat/service/WebSocketEvent";
 
 export default {
   name: "chatMsgFoot",
@@ -45,9 +49,15 @@ export default {
     function sendMsg() {
       if (msg.value !== "") {
 
-        chatStore.sendMessage({
-          message: msg.value
+        let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, {//将消息封装成json格式
+          message: msg.value,
+          isGroup: chatStore.chatting.isGroup,
+          receiver: chatStore.chatting.receiver,
+          sender: getUserNameFromToken(),
+          MsgType: globalConfig.message.type.raw_text,
         });
+
+        chatStore.sendMessage(wsMsg);
 
         msg.value = "";
       } else {
