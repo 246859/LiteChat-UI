@@ -66,18 +66,31 @@ export const addFriendService = (userName, friendUserName) => {
 };
 
 
-export const addGroupService = (groupId, userName) => {
+export const addGroupService = (userName, groupId) => {
     return service.post(
         '/chat/addGroup',
         {},
         {
             params: {
-                groupId: groupId,
-                userName: userName
+                userName: userName,
+                groupId: groupId
             }
         }
     )
 };
+
+export const createGroupService = (userName, groupName) => {
+    return service.post(
+        '/chat/createGroup',
+        {},
+        {
+            params: {
+                userName: userName,
+                groupName: groupName
+            }
+        }
+    )
+}
 
 export const deleteFriendService = (userName, friendUserName) => {
     return service.delete(

@@ -38,16 +38,16 @@ export default {
     });
 
     const jumpToMessage = (friend) => {//传递跳转信息
-      chatStore.chatting.receiver = friend.userName;
+      chatStore.chatting.receiver = getUserNameFromToken();
       chatStore.chatting.conversationName = friend.nickName;
       chatStore.chatting.isGroup = false;
-      chatStore.chatting.sender = getUserNameFromToken();
+      chatStore.chatting.sender = friend.userName;
       chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar1.png");
       chatStore.sidePage.pageFlag = 0;
 
       //在消息列表中是否已经存在
       let index = chatStore.messageList.findIndex((msg) => {
-        return msg.receiver === friend.userName;
+        return msg.sender === friend.userName;
       });
 
       //如果存在则覆盖，否则添加

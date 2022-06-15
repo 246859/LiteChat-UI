@@ -15,6 +15,7 @@
 import SideMsgCard from "@/components/chat/sideBar/sideMsgCard";
 import '../../../assets/style/chatPage.css';
 import {useChatStore} from "@/sotre/chatStore";
+import {getUserNameFromToken} from "@/utils/storage";
 
 export default {
   name: "sideBarMsgList",
@@ -27,7 +28,7 @@ export default {
     let sideMessageList = chatStore.messageList
 
     const jumpToMessage = (msg) => {//传递跳转信息
-      chatStore.chatting.receiver = msg.receiver;
+      chatStore.chatting.sender = msg.sender;
       chatStore.chatting.conversationName = msg.conversationName
       chatStore.chatting.isGroup = msg.isGroup;
       chatStore.chatting.avatar = msg.avatar;

@@ -18,6 +18,7 @@ export const useChatStore = defineStore('chatStore', {
             chatting: {
                 avatar: "",
                 conversationName: "",
+                sender: "",
                 receiver: "",
                 firstMsg: "我想来了一件很高兴的事情,哈哈哈哈",
                 chattingMsgList: [],
@@ -42,9 +43,10 @@ export const useChatStore = defineStore('chatStore', {
         close() {//手动关闭连接
             this.wsClient.close();
         },
-        sendMessage(data) {//发送信息
+        sendMessage(data, payload) {//发送信息
             if (this.wsClient && this.wsClient.readyState === 1) {//不为undefined 且 为开启状态
                 this.wsClient.send(JSON.stringify(data));
+                this.chatting.chattingMsgList.push(payload);
             } else {
                 errorTips(LANG.WS.ERROR);
             }
@@ -65,32 +67,26 @@ export const useChatStore = defineStore('chatStore', {
 
                     switch (msgData["event"]) {
                         case globalConfig.ws.message_event.chat: {
-                            let isNeedToRender = false;
                             //判断接收的消息是否是正在进行的会话消息,是的话则渲染,否的话存入另外渲染
-                            if ((payload.sender === userName && payload.receiver === this.chatting.receiver) ||
-                                (payload.sender === this.chatting.receiver && payload.receiver === userName)) {
+                            console.log(payload)
+                            if (payload.sender === this.chatting.sender) {
                                 this.chatting.chattingMsgList.push(payload);
-                                isNeedToRender = true
-                            } else if (payload.sender !== this.chatting.receiver && payload.receiver === userName) {
-                                isNeedToRender = true;
                             }
 
-                            if (isNeedToRender) {
-                                //消息处理成渲染格式
-                                payload.firstMsg = payload.message;
-                                payload.avatar = require('../assets/img/avatar/girl.jpg')
+                            //消息处理成渲染格式
+                            payload.firstMsg = payload.message;
+                            payload.avatar = require('../assets/img/avatar/girl.jpg')
 
-                                //是否存在
-                                let index = this.messageList.findIndex((msg) => {
-                                    //在新消息到来时判断消息是否是正在会话的消息,或者是已经存在的消息,来决定是否在消息列表新增卡片渲染
-                                    return msg.sender === payload.sender || (msg.receiver === payload.sender && msg.sender === payload.receiver);
-                                });
+                            //是否存在
+                            let index = this.messageList.findIndex((msg) => {
+                                //在新消息到来时判断消息是否是正在会话的消息,或者是已经存在的消息,来决定是否在消息列表新增卡片渲染
+                                return msg.sender === payload.sender;
+                            });
 
-                                if (index > -1) {
-                                    this.messageList[index].firstMsg = payload.message
-                                } else {
-                                    this.messageList.push(payload);
-                                }
+                            if (index > -1) {
+                                this.messageList[index].firstMsg = payload.message
+                            } else {
+                                this.messageList.push(payload);
                             }
 
                         }

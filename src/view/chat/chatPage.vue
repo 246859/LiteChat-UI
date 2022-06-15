@@ -27,7 +27,7 @@
                 class="border-left-light chat-right-sideBar gray-box"
                 width="200px">
 
-        <group-member-list :group-id="receiver"/>
+        <group-member-list :group-id="sender"/>
 
       </el-aside>
 
@@ -44,6 +44,7 @@ import GroupMemberList from "@/components/chat/mainBar/groupMemberList";
 import {useChatStore} from "@/sotre/chatStore";
 import {onMounted, ref} from "vue";
 import {globalConfig} from "@/config/config";
+import {getUserNameFromToken} from "@/utils/storage";
 
 export default {
   name: "chatPage",
@@ -54,31 +55,33 @@ export default {
     GroupMemberList,
   },
   setup() {
+    console.log(getUserNameFromToken())
+    console.log(getUserNameFromToken())
     const chatStore = useChatStore();
     let sc = ref(null);
     //缓存isGroup标志
     let isGroup = ref(chatStore.chatting.isGroup);
-    let receiver = ref(chatStore.chatting.receiver);
+    let sender = ref(chatStore.chatting.sender);
 
     let chatting = sessionStorage.getItem(globalConfig.page.chatting);
 
     if (chatting) {
       chatting = JSON.parse(chatting);
       isGroup.value = chatStore.chatting.isGroup = chatting.isGroup;
-      receiver.value = chatStore.chatting.receiver = chatting.receiver;
+      sender.value = chatStore.chatting.sender = chatting.sender;
     }
 
     //订阅state判断正在进行的会话
     chatStore.$subscribe((mutation, state) => {
-      if (receiver !== state.chatting.receiver) {
-        receiver.value = chatStore.chatting.receiver
+      if (sender !== state.chatting.sender) {
+        sender.value = chatStore.chatting.sender
         isGroup.value = state.chatting.isGroup;
       }
     });
 
     return {
       isGroup,
-      receiver,
+      sender,
       sc,
     }
 

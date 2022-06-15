@@ -48,7 +48,8 @@ export const LANG = {
         NICKNAME: {
             ENTER: "请输入昵称",
             BEYOND_LENGTH: "昵称长度须大于3个字符且小于15个字符"
-        }
+        },
+        NO_BLANK: "输入不能为空"
     },
     WS: {
         DISCONNECT: "连接失效,请重新登陆",

@@ -22,9 +22,9 @@
     <!--页面切换-->
     <div class="sideBar-msg-list">
       <el-scrollbar height="840px">
-        <side-bar-msg-list v-if="pageFlag === 0"/>
-        <side-bar-friend-list v-if="pageFlag === 1"/>
-        <side-bar-group-list v-if="pageFlag === 2"/>
+        <side-bar-msg-list v-if="pageFlag === 0" :key="chatKey"/>
+        <side-bar-friend-list v-if="pageFlag === 1" :key="friendKey"/>
+        <side-bar-group-list v-if="pageFlag === 2" :key="groupKey"/>
       </el-scrollbar>
     </div>
   </div>
@@ -36,7 +36,7 @@
   >
     <div class="add-dialog-foot">
       <el-input
-          v-model="searchContent"
+          v-model="addContent"
           :placeholder="dialogPlaceholder"
           :prefix-icon="Search"
           class="w-50 m-2"
@@ -65,6 +65,10 @@ import SideBarFriendList from "@/components/chat/sideBar/sideBarFriendList";
 import SideBarGroupList from "@/components/chat/sideBar/sideBarGroupList";
 import {useChatStore} from "@/sotre/chatStore";
 import {globalConfig} from "@/config/config";
+import {addFriendService, addGroupService, createGroupService} from "@/view/chat/service/chatService";
+import {errorTips, infoTips, successTips} from "@/utils/messageTips";
+import {LANG} from "@/config/lang";
+import {getUserNameFromToken} from "@/utils/storage";
 
 export default {
   name: "sideBarList",
@@ -84,25 +88,29 @@ export default {
     let addButtonContent = ref("");
     let switchType = "";
 
+    let groupKey = ref(1);
+    let friendKey = ref(1);
+    let chatKey = ref(1);
+
     chatStore.$subscribe((mutation, state) => {
       pageFlag.value = state.sidePage.pageFlag;
     });
 
 
-    function add(type) {
+    function add(type) {//根据下拉菜单判断
       dialogVisible.value = true;
       switchType = type;
       switch (type) {
         case "friend": {
           dialogTitle.value = "添加好友"
           dialogPlaceholder.value = "输入对方的用户名"
-          addButtonContent.value = "查找"
+          addButtonContent.value = "添加"
         }
           break;
         case "group": {
           dialogTitle.value = "添加群聊"
           dialogPlaceholder.value = "输入对应的群号"
-          addButtonContent.value = "查找"
+          addButtonContent.value = "添加"
         }
           break;
         case "createGroup": {
@@ -117,21 +125,74 @@ export default {
 
     function addEvent() {
 
+      if (addContent.value === "") {//非空校验
+        infoTips(LANG.FORM.NO_BLANK)
+        return;
+      }
+
+      let userName = getUserNameFromToken();
+      let target = addContent.value;
+
       switch (switchType) {
         case "friend": {
-
+          addFriend(userName, target);
         }
           break;
         case "group": {
-
+          addGroup(userName, target);
         }
           break;
         case "createGroup": {
-
+          createGroup(userName, target);
         }
           break;
       }
+      addContent.value = ""
+    }
 
+    //添加好友
+    function addFriend(userName, friendName) {
+      addFriendService(userName, friendName).then(res => {
+        if (res.data.code === 200 && res.data.isSuccess) {
+          successTips(res.data.msg);
+          dialogVisible.value = false;
+          friendKey.value++;
+        } else {
+          errorTips(res.data.msg);
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+
+    //添加群聊
+    function addGroup(userName, groupId) {
+      addGroupService(userName, groupId).then(res => {
+        if (res.data.code === 200 && res.data.isSuccess) {
+          successTips(res.data.msg);
+          dialogVisible.value = false;
+          groupKey.value++;
+        } else {
+          errorTips(res.data.msg);
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+
+    //创建群聊
+    function createGroup(userName, groupName) {
+      createGroupService(userName, groupName).then(res => {
+        if (res.data.code === 200 && res.data.isSuccess) {
+          successTips(res.data.msg);
+          dialogVisible.value = false;
+          groupKey.value++;
+        } else {
+          errorTips(res.data.msg);
+        }
+      }).catch(error => {
+        console.log(error);
+      });
     }
 
     return {
@@ -144,6 +205,10 @@ export default {
       dialogTitle,
       dialogPlaceholder,
       addButtonContent,
+      addEvent,
+      groupKey,
+      friendKey,
+      chatKey
     }
   }
 }
@@ -177,7 +242,7 @@ export default {
   display: flex;
   align-items: center;
   height: 39px;
-  padding: 10px 10px 10px 24px;
+  padding: 10px 10px 10px 19px;
 }
 
 .chat-add {

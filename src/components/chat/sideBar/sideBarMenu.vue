@@ -128,7 +128,8 @@ export default {
         let chatting = {
           conversationName: state.chatting.conversationName,
           isGroup: state.chatting.isGroup,
-          receiver: state.chatting.receiver
+          receiver: state.chatting.receiver,
+          sender: state.chatting.sender,
         }
         sessionStorage.setItem(globalConfig.page.chatting, JSON.stringify(chatting));
       });

@@ -35,7 +35,7 @@ import {ref} from "vue";
 import {useChatStore} from "@/sotre/chatStore";
 import {infoTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
-import {getUserNameFromToken} from "@/utils/storage";
+import {getNickNameFromToken, getUserNameFromToken} from "@/utils/storage";
 import {globalConfig} from "@/config/config";
 import {WebSocketMessage} from "@/view/chat/service/WebSocketEvent";
 
@@ -49,15 +49,18 @@ export default {
     function sendMsg() {
       if (msg.value !== "") {
 
-        let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, {//将消息封装成json格式
+        let payload = {//将消息封装成json格式
           message: msg.value,
           isGroup: chatStore.chatting.isGroup,
-          receiver: chatStore.chatting.receiver,
+          receiver: chatStore.chatting.sender,//正在对话的用户即为接收者
           sender: getUserNameFromToken(),
+          conversationName: getNickNameFromToken(),
           MsgType: globalConfig.message.type.raw_text,
-        });
+        };
 
-        chatStore.sendMessage(wsMsg);
+        let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, payload);
+
+        chatStore.sendMessage(wsMsg, payload);
 
         msg.value = "";
       } else {

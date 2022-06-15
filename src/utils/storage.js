@@ -12,17 +12,19 @@ function getToken() {
     return localStorage.getItem(globalConfig.tokenAddress);
 }
 
-function getNickName() {
-    return localStorage.getItem(globalConfig.nickNameAddress);
-}
-
 function clearNickName() {
     localStorage.removeItem(globalConfig.nickNameAddress);
 }
 
 function getUserNameFromToken() {
     let decode = decodeURIComponent(escape(window.atob(getToken().split('.')[1])));
-    return decode ? JSON.parse(decode).sub : undefined;
+    return decode ? JSON.parse(JSON.parse(decode).sub).userName : undefined;
+}
+
+function getNickNameFromToken() {
+    let decode = decodeURIComponent(escape(window.atob(getToken().split('.')[1])));
+    console.log(JSON.parse(decode).sub.nickName)
+    return decode ? JSON.parse(JSON.parse(decode).sub).nickName : undefined;
 }
 
 export {
@@ -31,6 +33,6 @@ export {
     clearToken,
     getToken,
     clearNickName,
-    getNickName,
+    getNickNameFromToken,
     getUserNameFromToken
 }

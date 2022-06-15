@@ -4,6 +4,7 @@ import {errorTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
 import router from "@/router/router";
 import {clearToken} from "@/utils/storage";
+import {logoutService} from "@/view/chat/service/chatService";
 
 export const service = axios.create({
     baseURL: globalConfig.request.base_url
