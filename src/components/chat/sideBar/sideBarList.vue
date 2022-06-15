@@ -43,9 +43,13 @@
           placeholder=""
           size="small"
       />
-      <el-button class="add-button">
+      <el-button class="add-button" @click="addEvent">
         {{ addButtonContent }}
       </el-button>
+    </div>
+
+    <div>
+
     </div>
   </el-dialog>
 </template>
@@ -78,13 +82,16 @@ export default {
     let dialogTitle = ref("");
     let dialogPlaceholder = ref("");
     let addButtonContent = ref("");
+    let switchType = "";
 
     chatStore.$subscribe((mutation, state) => {
       pageFlag.value = state.sidePage.pageFlag;
     });
 
+
     function add(type) {
       dialogVisible.value = true;
+      switchType = type;
       switch (type) {
         case "friend": {
           dialogTitle.value = "添加好友"
@@ -102,6 +109,25 @@ export default {
           dialogTitle.value = "创建群聊"
           dialogPlaceholder.value = "输入群聊的名称"
           addButtonContent.value = "创建"
+        }
+          break;
+      }
+
+    }
+
+    function addEvent() {
+
+      switch (switchType) {
+        case "friend": {
+
+        }
+          break;
+        case "group": {
+
+        }
+          break;
+        case "createGroup": {
+
         }
           break;
       }

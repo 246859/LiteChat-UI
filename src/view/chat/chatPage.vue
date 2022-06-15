@@ -11,11 +11,10 @@
 
       <el-container>
         <!--聊天页面聊天消息页面-->
-        <el-scrollbar ref="sc" class="gray-box" height="640px">
-          <el-main class="chat-message-box">
-            <chat-msg-main/>
-          </el-main>
-        </el-scrollbar>
+
+        <el-main class="chat-message-box gray-box">
+          <chat-msg-main/>
+        </el-main>
 
         <!--聊天页面底部-->
         <el-footer class="chat-foot-box border-top-light gray-box" height="200px">
@@ -56,6 +55,7 @@ export default {
   },
   setup() {
     const chatStore = useChatStore();
+    let sc = ref(null);
     //缓存isGroup标志
     let isGroup = ref(chatStore.chatting.isGroup);
     let receiver = ref(chatStore.chatting.receiver);
@@ -74,11 +74,12 @@ export default {
         receiver.value = chatStore.chatting.receiver
         isGroup.value = state.chatting.isGroup;
       }
-    })
+    });
 
     return {
       isGroup,
-      receiver
+      receiver,
+      sc,
     }
 
   }
@@ -86,5 +87,7 @@ export default {
 </script>
 
 <style scoped>
-
+:deep(.el-main) {
+  padding: 0;
+}
 </style>

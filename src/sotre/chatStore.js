@@ -71,10 +71,8 @@ export const useChatStore = defineStore('chatStore', {
                                 (payload.sender === this.chatting.receiver && payload.receiver === userName)) {
                                 this.chatting.chattingMsgList.push(payload);
                                 isNeedToRender = true
-                                console.log("当前会话消息")
                             } else if (payload.sender !== this.chatting.receiver && payload.receiver === userName) {
                                 isNeedToRender = true;
-                                console.log("非当前会话消息")
                             }
 
                             if (isNeedToRender) {
@@ -87,8 +85,6 @@ export const useChatStore = defineStore('chatStore', {
                                     //在新消息到来时判断消息是否是正在会话的消息,或者是已经存在的消息,来决定是否在消息列表新增卡片渲染
                                     return msg.sender === payload.sender || (msg.receiver === payload.sender && msg.sender === payload.receiver);
                                 });
-
-                                console.log(index)
 
                                 if (index > -1) {
                                     this.messageList[index].firstMsg = payload.message
