@@ -5,7 +5,7 @@
         <chat-send-msg-card
             :avatar="require('../../../assets/img/avatar/jojo.jpg')"
             :message="msg.message"
-            :nick-name="msg.conversationName"
+            :nick-name="msg.senderNickname"
             :sender="msg.sender"
         />
       </li>

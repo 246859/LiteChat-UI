@@ -23,7 +23,6 @@ function getUserNameFromToken() {
 
 function getNickNameFromToken() {
     let decode = decodeURIComponent(escape(window.atob(getToken().split('.')[1])));
-    console.log(JSON.parse(decode).sub.nickName)
     return decode ? JSON.parse(JSON.parse(decode).sub).nickName : undefined;
 }
 

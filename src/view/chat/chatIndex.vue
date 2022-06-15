@@ -42,7 +42,9 @@ export default {
     const chatStore = useChatStore();
     const router = useRouter();
 
+    //连接ws服务器
     chatStore.connect();
+
 
     return {}
   }

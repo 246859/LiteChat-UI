@@ -23,12 +23,14 @@ import router from "@/router/router";
 import {getUserNameFromToken} from "@/utils/storage";
 import {deleteFriendService, deleteGroupService} from "@/view/chat/service/chatService";
 import {errorTips, successTips} from "@/utils/messageTips";
+import {useRouter} from "vue-router";
 
 export default {
   name: "chatMsgHeader",
   components: {Icon},
   setup() {
     const chatStore = useChatStore();
+    const router = useRouter();
     //缓存会话名称
     let conversationName = ref(chatStore.chatting.conversationName);
     let isGroup = ref(chatStore.chatting.isGroup);
@@ -53,7 +55,21 @@ export default {
     });
 
     function closeConversation() {//关闭会话
-      router.push({name: "introduce"});
+
+
+      let index = chatStore.messageList.findIndex(msg => {
+        return isGroup ? msg.groupId === chatStore.chatting.groupId : msg.sender === chatStore.chatting.sender;
+      });
+
+      console.log(index)
+      if (index > -1) {
+        chatStore.messageList.splice(index, 1);
+      }
+
+      //这里不知道为什么用串行的方法无法跳转路由
+      setTimeout(() => {
+        router.replace({name: "introduce"});
+      }, 100);
     }
 
     function deleteConversation(flag) {

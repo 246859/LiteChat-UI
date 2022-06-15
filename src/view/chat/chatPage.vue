@@ -27,7 +27,7 @@
                 class="border-left-light chat-right-sideBar gray-box"
                 width="200px">
 
-        <group-member-list :group-id="sender"/>
+        <group-member-list :group-id="isGroup?groupId:sender"/>
 
       </el-aside>
 
@@ -55,20 +55,22 @@ export default {
     GroupMemberList,
   },
   setup() {
-    console.log(getUserNameFromToken())
-    console.log(getUserNameFromToken())
     const chatStore = useChatStore();
     let sc = ref(null);
     //缓存isGroup标志
     let isGroup = ref(chatStore.chatting.isGroup);
     let sender = ref(chatStore.chatting.sender);
+    let groupId = ref(chatStore.chatting.groupId);
 
     let chatting = sessionStorage.getItem(globalConfig.page.chatting);
+
+    console.log(chatting)
 
     if (chatting) {
       chatting = JSON.parse(chatting);
       isGroup.value = chatStore.chatting.isGroup = chatting.isGroup;
       sender.value = chatStore.chatting.sender = chatting.sender;
+      groupId.value = chatStore.chatting.groupId = chatting.groupId;
     }
 
     //订阅state判断正在进行的会话
@@ -76,6 +78,7 @@ export default {
       if (sender !== state.chatting.sender) {
         sender.value = chatStore.chatting.sender
         isGroup.value = state.chatting.isGroup;
+        groupId.value = state.chatting.groupId;
       }
     });
 
@@ -83,6 +86,7 @@ export default {
       isGroup,
       sender,
       sc,
+      groupId
     }
 
   }

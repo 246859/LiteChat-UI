@@ -49,20 +49,30 @@ export default {
     function sendMsg() {
       if (msg.value !== "") {
 
+        let isGroup = chatStore.chatting.isGroup;
+
         let payload = {//将消息封装成json格式
+          avatar: chatStore.chatting.avatar,
           message: msg.value,
           isGroup: chatStore.chatting.isGroup,
           receiver: chatStore.chatting.sender,//正在对话的用户即为接收者
           sender: getUserNameFromToken(),
-          conversationName: getNickNameFromToken(),
+          groupId: isGroup ? chatStore.chatting.groupId : "",
+          conversationName: isGroup ? chatStore.chatting.conversationName : getNickNameFromToken(),
+          senderNickname: getNickNameFromToken(),
+          firstMsg: getNickNameFromToken() + ":" + msg.value,
           MsgType: globalConfig.message.type.raw_text,
         };
 
-        let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, payload);
-
-        chatStore.sendMessage(wsMsg, payload);
-
+        console.log(payload)
         msg.value = "";
+
+        console.log(payload)
+        let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, payload);
+        chatStore.sendMessage(wsMsg, payload);
+        chatStore.renderSideBarMsgList(payload, isGroup);//渲染列表
+
+
       } else {
         infoTips(LANG.CHAT.BLANK_MSG);
       }

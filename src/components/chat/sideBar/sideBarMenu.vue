@@ -2,8 +2,19 @@
   <div class="sideBar-menu border-right-light">
     <ul>
       <!--头像-->
+
       <li>
-        <img alt="头像" class="sideBar-avatar" src="../../../assets/img/avatar/girl.jpg">
+        <el-popover
+            :content="`用户名:${userName}`"
+            :width="200"
+            placement="top-start"
+            trigger="hover"
+        >
+          <template #reference>
+            <img alt="头像" class="sideBar-avatar" src="../../../assets/img/avatar/girl.jpg">
+          </template>
+        </el-popover>
+
       </li>
       <!--消息列表-->
       <li ref="message">
@@ -59,7 +70,7 @@
 import Icon from "@/components/common/icon";
 import '../../../assets/style/common.css';
 import {onMounted, ref} from "vue";
-import {clearToken, sessionStorage} from "@/utils/storage";
+import {clearToken, getUserNameFromToken, sessionStorage} from "@/utils/storage";
 import {useChatStore} from "@/sotre/chatStore";
 import {useRouter} from "vue-router";
 import {globalConfig} from "@/config/config";
@@ -83,9 +94,10 @@ export default {
 
     const clickClass = "sideBar-icon-click";
     const menu = [message, friend, group, liteZone];
+    const userName = ref(getUserNameFromToken());
 
     function colorChange(index) {//点击元素 变色保留
-      if (!menu[index]) return
+      if (!menu[index].value) return
       menu[index].value.classList.add(clickClass);
 
       menu.forEach(other => {
@@ -93,9 +105,8 @@ export default {
           other.value.classList.remove(clickClass);
         }
       });
-
       index === 0 ?
-          router.push({name: "chatPage"}) :
+          chatStore.messageList.length === 0 ? router.push({name: "introduce"}) : router.push({name: "chatPage"}) :
           router.push({name: "introduce"});
 
       chatStore.sidePage.pageFlag = index;
@@ -130,10 +141,10 @@ export default {
           isGroup: state.chatting.isGroup,
           receiver: state.chatting.receiver,
           sender: state.chatting.sender,
+          groupId: state.chatting.groupId
         }
         sessionStorage.setItem(globalConfig.page.chatting, JSON.stringify(chatting));
       });
-
     });
 
     return {
@@ -144,6 +155,7 @@ export default {
       liteZone,
       dropdownMenu,
       logout,
+      userName
     }
   }
 }

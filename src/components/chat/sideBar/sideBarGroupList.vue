@@ -42,13 +42,15 @@ export default {
       chatStore.chatting.receiver = getUserNameFromToken();
       chatStore.chatting.conversationName = group.groupName
       chatStore.chatting.isGroup = true;
-      chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar2.png");
+      chatStore.chatting.avatar = require('../../../assets/img/avatar/avatar1.png');
       chatStore.chatting.sender = group.groupId;
+      chatStore.chatting.groupId = group.groupId;
+      chatStore.chatting.chattingMsgList.splice(0, chatStore.chatting.chattingMsgList.length);
       chatStore.sidePage.pageFlag = 0;
 
       //在消息列表中是否已经存在
       let index = chatStore.messageList.findIndex((msg) => {
-        return msg.sender === group.groupId;
+        return msg.groupId === group.groupId;
       });
 
 

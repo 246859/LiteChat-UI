@@ -42,7 +42,9 @@ export default {
       chatStore.chatting.conversationName = friend.nickName;
       chatStore.chatting.isGroup = false;
       chatStore.chatting.sender = friend.userName;
-      chatStore.chatting.avatar = require("../../../assets/img/avatar/avatar1.png");
+      chatStore.chatting.groupId = "";
+      chatStore.chatting.chattingMsgList.splice(0, chatStore.chatting.chattingMsgList.length);
+      chatStore.chatting.avatar = require('../../../assets/img/avatar/avatar2.png');
       chatStore.sidePage.pageFlag = 0;
 
       //在消息列表中是否已经存在

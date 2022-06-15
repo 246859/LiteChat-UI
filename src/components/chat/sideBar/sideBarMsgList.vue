@@ -28,11 +28,19 @@ export default {
     let sideMessageList = chatStore.messageList
 
     const jumpToMessage = (msg) => {//传递跳转信息
+
+      let isGroup = msg.isGroup;
+      if (isGroup ? msg.groupId === chatStore.chatting.groupId : msg.sender === chatStore.chatting.sender) {//判断点击的对象是否为正在会话的对象,避免重复请求
+        return;
+      }
+
       chatStore.chatting.sender = msg.sender;
       chatStore.chatting.conversationName = msg.conversationName
       chatStore.chatting.isGroup = msg.isGroup;
       chatStore.chatting.avatar = msg.avatar;
+      chatStore.chatting.groupId = msg.groupId;
       chatStore.sidePage.pageFlag = 0;
+      chatStore.chatting.chattingMsgList.splice(0, chatStore.chatting.chattingMsgList.length);
     }
 
     return {

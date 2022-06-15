@@ -1,12 +1,7 @@
 <template>
   <div class="sideBar-list border-right-light">
     <div class="border-bottom-light chat-search">
-      <el-input
-          v-model="searchContent"
-          :prefix-icon="Search"
-          class="w-50 m-2"
-          size="small"
-      />
+      <span class="nickName text-hidden">{{ `${nickName}` }}</span>
       <el-dropdown trigger="click">
         <icon class="chat-add" symbol="icon-tianjia"></icon>
         <template #dropdown>
@@ -68,7 +63,7 @@ import {globalConfig} from "@/config/config";
 import {addFriendService, addGroupService, createGroupService} from "@/view/chat/service/chatService";
 import {errorTips, infoTips, successTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
-import {getUserNameFromToken} from "@/utils/storage";
+import {getNickNameFromToken, getUserNameFromToken} from "@/utils/storage";
 
 export default {
   name: "sideBarList",
@@ -91,6 +86,9 @@ export default {
     let groupKey = ref(1);
     let friendKey = ref(1);
     let chatKey = ref(1);
+
+    let userName = ref(getUserNameFromToken());
+    let nickName = ref(getNickNameFromToken());
 
     chatStore.$subscribe((mutation, state) => {
       pageFlag.value = state.sidePage.pageFlag;
@@ -208,7 +206,9 @@ export default {
       addEvent,
       groupKey,
       friendKey,
-      chatKey
+      chatKey,
+      userName,
+      nickName
     }
   }
 }
@@ -240,9 +240,10 @@ export default {
 
 .chat-search {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   height: 39px;
-  padding: 10px 10px 10px 19px;
+  padding: 10px 10px 10px 25px;
 }
 
 .chat-add {
@@ -277,6 +278,23 @@ export default {
 
 :deep(.el-input__inner) {
   font-size: 13px;
+}
+
+.user-info {
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+}
+
+.nickName {
+  color: #666666;
+  font-size: 20px;
+  width: 200px;
+}
+
+.userName {
+  font-size: 12px;
+  width: 200px;
 }
 
 </style>
