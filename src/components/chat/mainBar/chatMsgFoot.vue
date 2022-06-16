@@ -8,12 +8,11 @@
       <li class="color-hover-deep-grey">
         <el-upload
             ref="uploadImg"
-            :before-upload="beforeUpload"
-            :http-request="uploadHandler"
+            :before-upload="imgBeforeUpload"
+            :http-request="imgUploadHandler"
             :limit="1"
-            :on-exceed="handleExceed"
+            :on-exceed="imgHandleExceed"
             :show-file-list="false"
-            accept="jpg"
 
         >
           <icon class="foot-icon" symbol="icon-icon"/>
@@ -21,9 +20,13 @@
       </li>
       <li class="color-hover-deep-grey">
         <el-upload
-            :auto-upload="false"
+            ref="uploadFile"
+            :before-upload="fileBeforeUpload"
+            :http-request="fileUploadHandler"
             :limit="1"
+            :on-exceed="fileHandleExceed"
             :show-file-list="false"
+
         >
           <icon class="foot-icon" symbol="icon-wenjian"/>
         </el-upload>
@@ -55,7 +58,8 @@ import {LANG} from "@/config/lang";
 import {getNickNameFromToken, getUserNameFromToken} from "@/utils/storage";
 import {globalConfig} from "@/config/config";
 import {WebSocketMessage} from "@/view/chat/service/WebSocketEvent";
-import {convertImgToBase64} from "@/utils/utils";
+import {convertImgToBase64, downFileFromBlob} from "@/utils/utils";
+import {downloadFile, uploadFile} from "@/view/chat/service/chatService";
 
 export default {
   name: "chatMsgFoot",
@@ -94,11 +98,11 @@ export default {
       }
     }
 
-    function handleExceed(fileList) {//直接上传文件
+    function imgHandleExceed(fileList) {//直接上传文件
       submit(fileList[0]);
     }
 
-    function beforeUpload(file) {
+    function imgBeforeUpload(file) {
       if (file.type !== "image/png" && file.type !== "image/jpeg" && file.type !== "image/gif") {//仅允许gif jpg png
         errorTips("仅允许 gif/jpg/png 格式的图片")
         return false
@@ -109,13 +113,12 @@ export default {
     }
 
 
-    function uploadHandler(event) {
-      submit(event.file);
+    function imgUploadHandler(event) {
+      submitImg(event.file);
     }
 
-    function submit(file) {
+    function submitImg(file) {
       convertImgToBase64(file, (base64Str) => {
-        console.log(event.file)
         let isGroup = chatStore.chatting.isGroup;
         let payload = {//将消息封装成json格式
           avatar: chatStore.chatting.avatar,
@@ -129,7 +132,6 @@ export default {
           firstMsg: getUserNameFromToken() + ":" + "图片",
           messageType: globalConfig.message.type.img_text,
         };
-
         let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, payload);
 
         chatStore.sendMessage(wsMsg);
@@ -137,12 +139,69 @@ export default {
       })
     }
 
+    function fileBeforeUpload(file) {
+      if (file.size / 1024 / 1024 > 10) {//小于5M
+        errorTips("仅允许允许上传10MB以下的文件")
+        return false
+      }
+    }
+
+    function fileHandleExceed(fileList) {
+      submitFile(fileList[0]);
+    }
+
+    function fileUploadHandler(event) {
+      submitFile(event.file);
+    }
+
+    function submitFile(file) {
+
+      console.log(file)
+      let formData = new FormData();
+      formData.append("file", file);
+      formData.append("user", getUserNameFromToken())
+      uploadFile(formData).then(res => {
+        console.log("文件上传----")
+        console.log(res)
+        if (res.data.code === 200) {
+          let newName = res.data.data;
+          let fileName = file.name;
+
+          let isGroup = chatStore.chatting.isGroup;
+          let payload = {//将消息封装成json格式
+            avatar: chatStore.chatting.avatar,
+            message: newName,
+            fileName: fileName,
+            isGroup: chatStore.chatting.isGroup,
+            receiver: chatStore.chatting.sender,//正在对话的用户即为接收者
+            sender: getUserNameFromToken(),
+            groupId: isGroup ? chatStore.chatting.groupId : "",
+            conversationName: isGroup ? chatStore.chatting.conversationName : getNickNameFromToken(),
+            senderNickname: getNickNameFromToken(),
+            firstMsg: getUserNameFromToken() + ":" + "文件",
+            messageType: globalConfig.message.type.file_text,
+          };
+
+          let wsMsg = new WebSocketMessage(globalConfig.ws.message_event.chat, payload);
+
+          chatStore.sendMessage(wsMsg);
+          chatStore.renderSideBarMsgList(payload, isGroup);//渲染列表
+
+        }
+      });
+
+
+    }
+
     return {
       msg,
       sendTextMsg,
-      uploadHandler,
-      handleExceed,
-      beforeUpload,
+      imgHandleExceed,
+      imgBeforeUpload,
+      imgUploadHandler,
+      fileBeforeUpload,
+      fileHandleExceed,
+      fileUploadHandler,
       uploadImg
     }
   }

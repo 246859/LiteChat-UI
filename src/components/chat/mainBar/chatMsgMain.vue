@@ -4,6 +4,7 @@
       <li v-for="msg in chattingMsgList">
         <chat-send-msg-card
             :avatar="require('../../../assets/img/avatar/jojo.jpg')"
+            :file-name="msg.fileName"
             :message="msg.message"
             :messageType="msg.messageType"
             :nick-name="msg.senderNickname"

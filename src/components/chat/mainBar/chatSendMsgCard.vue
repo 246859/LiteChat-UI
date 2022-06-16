@@ -11,6 +11,11 @@
       <div ref="msgBox">
         <span v-if="isRaw" class="send-content-box">{{ message }}</span>
         <img v-if="isImg" :src="message" alt="图片消息" class="img-msg">
+        <span v-if="isFile" class="file-msg-card" @click="downLoadFile">
+          <img :src="require('../../../assets/img/avatar/file.svg')" alt="文件" class="file-card">
+          <p>{{ `文件名:${fileName}` }}</p>
+        </span>
+
       </div>
 
     </div>
@@ -24,6 +29,8 @@
 import {onMounted, reactive, ref} from "vue";
 import {getUserNameFromToken} from "@/utils/storage";
 import {globalConfig} from "@/config/config";
+import {downloadFile, getOriginalNameService} from "@/view/chat/service/chatService";
+import {downFileFromBlob} from "@/utils/utils";
 
 export default {
   name: "chatSendMsgCard",
@@ -33,6 +40,7 @@ export default {
     nickName: String,
     message: String,
     messageType: String,
+    fileName: String
   },
   setup(props) {
 
@@ -43,13 +51,26 @@ export default {
     const msgBox = ref();
     const isRaw = ref(props.messageType === globalConfig.message.type.raw_text);
     const isImg = ref(props.messageType === globalConfig.message.type.img_text);
+    const isFile = ref(props.messageType === globalConfig.message.type.file_text);
+    let fileName = ref(props.fileName);
 
     const data = reactive({
       isSelf: props.sender === userName,
       avatar: props.avatar,
       senderNickName: props.nickName,
-      message: props.message
+      message: props.message,
     });
+
+    //代码写的太烂，只能在这里获取真实文件名
+    function getOriginalName() {
+      getOriginalNameService(data.message).then(res => {
+        if (res.data.code === 200) {
+          fileName.value = res.data.data;
+        }
+      }).catch(err => {
+        console.log(err)
+      });
+    }
 
 
     onMounted(() => {
@@ -59,14 +80,28 @@ export default {
       } else {
         msgBox.value.classList.add('send-content-box-other');
       }
+      if (isFile.value) {//仅仅当为文件时请求原始文件名
+        getOriginalName()
+      }
     });
+
+    function downLoadFile() {
+      downloadFile(props.message).then(res => {
+        downFileFromBlob(res.data, fileName.value);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
 
     return {
       ...data,
       sendBox,
       msgBox,
       isRaw,
-      isImg
+      isImg,
+      isFile,
+      downLoadFile,
+      fileName
     }
   }
 }
@@ -132,6 +167,22 @@ export default {
 .send-content-box-self::after {
   left: 100%;
   border-left-color: #fff;
+}
+
+.file-msg-card p {
+  text-align: center;
+  color: #666666;
+  font-size: 13px;
+}
+
+.file-msg-card:hover {
+  cursor: pointer;
+}
+
+.file-card {
+  width: 100px;
+  height: 100px;
+  border-radius: 5%;
 }
 
 </style>

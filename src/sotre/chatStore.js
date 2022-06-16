@@ -4,6 +4,7 @@ import {errorTips, infoTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
 import {clearToken, getToken, getUserNameFromToken} from "@/utils/storage";
 import {reactive} from "vue";
+import {getFirstMsgFromPayload} from "@/utils/utils";
 
 //聊天全局状态管理
 export const useChatStore = defineStore('chatStore', {
@@ -103,7 +104,8 @@ export const useChatStore = defineStore('chatStore', {
                 }
             }
 
-            payload.firstMsg = payload.senderNickname + ":" + payload.message;
+            payload.firstMsg = getFirstMsgFromPayload(payload);
+            console.log(payload.firstMsg);
 
             //是否存在
             let index = this.messageList.findIndex((msg) => {
@@ -124,14 +126,8 @@ export const useChatStore = defineStore('chatStore', {
             let index = this.messageList.findIndex((msg) => {
                 return isGroup ? payload.groupId === msg.groupId : msg.sender === payload.receiver;
             });
-
             this.chatting.chattingMsgList.push(payload);
-            if (payload.MsgType === globalConfig.message.type.raw_text) {
-                this.messageList[index].firstMsg = payload.firstMsg;
-            } else if (payload.MsgType === globalConfig.message.type.img_text) {
-                this.messageList[index].firstMsg = payload.firstMsg;
-            }
-
+            this.messageList[index].firstMsg = getFirstMsgFromPayload(payload);
         },
         onError() {
             while (true) {

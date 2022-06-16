@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="group-member-count">
-      群成员{{ ` (${0}/${memberList.length})` }}
+      群成员{{ ` (${memberList.length})` }}
     </div>
-    <el-input
-        v-model="content"
-        :prefix-icon="Search"
-        class="w-50 m-2 group-member-search"
-        size="small"
-    />
+    <!--    <el-input-->
+    <!--        v-model="content"-->
+    <!--        :prefix-icon="Search"-->
+    <!--        class="w-50 m-2 group-member-search"-->
+    <!--        size="small"-->
+    <!--    />-->
   </div>
 
   <div>

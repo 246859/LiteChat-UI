@@ -165,4 +165,32 @@ export const getGroupMsgService = (groupId, page) => {
     )
 };
 
+export const uploadFile = (formData) => {
+    return service.post(
+        '/file/upload',
+        formData
+    )
+}
+export const downloadFile = (fileName) => {
+    return service.get(
+        '/file/download',
+        {
+            params: {
+                fileName: fileName
+            },
+            responseType: "blob"
+        },
+    )
+}
+
+export const getOriginalNameService = (filName) => {
+    return service.get(
+        '/file/getOriginalName',
+        {
+            params: {
+                newFileName: filName
+            }
+        }
+    )
+}
 
