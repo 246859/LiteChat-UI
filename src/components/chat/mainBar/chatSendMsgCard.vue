@@ -8,8 +8,9 @@
       <!--名称      -->
       <div ref="sender" class="send-msg-name">{{ senderNickName }}</div>
       <!--消息气泡-->
-      <div ref="msgBox" class="send-content-box">
-        {{ message }}
+      <div ref="msgBox">
+        <span v-if="isRaw" class="send-content-box">{{ message }}</span>
+        <img v-if="isImg" :src="message" alt="图片消息" class="img-msg">
       </div>
 
     </div>
@@ -22,6 +23,7 @@
 <script>
 import {onMounted, reactive, ref} from "vue";
 import {getUserNameFromToken} from "@/utils/storage";
+import {globalConfig} from "@/config/config";
 
 export default {
   name: "chatSendMsgCard",
@@ -29,7 +31,8 @@ export default {
     sender: String,
     avatar: String,
     nickName: String,
-    message: String
+    message: String,
+    messageType: String,
   },
   setup(props) {
 
@@ -38,6 +41,8 @@ export default {
     const userName = getUserNameFromToken();//从token中的payload获取用户名
     const sendBox = ref();
     const msgBox = ref();
+    const isRaw = ref(props.messageType === globalConfig.message.type.raw_text);
+    const isImg = ref(props.messageType === globalConfig.message.type.img_text);
 
     const data = reactive({
       isSelf: props.sender === userName,
@@ -59,7 +64,9 @@ export default {
     return {
       ...data,
       sendBox,
-      msgBox
+      msgBox,
+      isRaw,
+      isImg
     }
   }
 }
@@ -90,7 +97,7 @@ export default {
 
 .send-msg-name {
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 12px;
   color: rgb(122, 123, 123);
 }
 
@@ -109,6 +116,12 @@ export default {
   top: 10px;
   margin-top: -2px;
   border: 7px solid transparent;
+}
+
+.img-msg {
+  width: 100px;
+  height: 100px;
+  border-radius: 5%;
 }
 
 .send-content-box-other::after {

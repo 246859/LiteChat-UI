@@ -5,6 +5,7 @@
         <chat-send-msg-card
             :avatar="require('../../../assets/img/avatar/jojo.jpg')"
             :message="msg.message"
+            :messageType="msg.messageType"
             :nick-name="msg.senderNickname"
             :sender="msg.sender"
         />
@@ -63,7 +64,6 @@ export default {
       //每次向上加载时加载10条聊天记录,一个li的高度为90px,相应的控制滚轮向下滑动900px
       //实际上为查出来多少条聊天记录，滚轮滑动多少 *90px
       if (obj && obj.scrollTop === 0) {
-        console.log("到顶部了!-----------------------------------------")
         loadMsg();
       }
     }
@@ -105,7 +105,6 @@ export default {
 
     //处理消息
     function processMsg(msgList) {
-      console.log(msgList)
       let length = msgList.length;
       //如果小于10则下次没有必要再请求聊天记录
       chatStore.chatRecord.top = length < 10;

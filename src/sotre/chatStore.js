@@ -1,10 +1,8 @@
 import {defineStore} from "pinia/dist/pinia";
 import {globalConfig} from "@/config/config";
-import {errorTips} from "@/utils/messageTips";
+import {errorTips, infoTips} from "@/utils/messageTips";
 import {LANG} from "@/config/lang";
-import {useRouter} from "vue-router";
 import {clearToken, getToken, getUserNameFromToken} from "@/utils/storage";
-import router from "@/router/router";
 import {reactive} from "vue";
 
 //聊天全局状态管理
@@ -38,17 +36,19 @@ export const useChatStore = defineStore('chatStore', {
             try {
                 this.wsClient = new WebSocket(`${globalConfig.ws.url}?${getToken()}`);
             } catch (e) {
+                console.log(e)
                 clearToken();
                 errorTips(LANG.AUTH.LOGIN.TIME_OUT);
             }
 
             this.wsClient.onmessage = this.onMessage;
+            this.wsClient.onclose = this.onClose;
 
         },
-        close() {//手动关闭连接
-            this.wsClient.close();
+        onClose() {//手动关闭连接
+            infoTips("与服务器断开连接,请刷新重试");
         },
-        sendMessage(data, payload) {//发送信息
+        sendMessage(data) {//发送信息
             if (this.wsClient && this.wsClient.readyState === 1) {//不为undefined 且 为开启状态
                 this.wsClient.send(JSON.stringify(data));
             } else {
@@ -119,19 +119,27 @@ export const useChatStore = defineStore('chatStore', {
 
         },
         renderSideBarMsgList(payload, isGroup) {
+
             //消息处理成渲染格式
             let index = this.messageList.findIndex((msg) => {
                 return isGroup ? payload.groupId === msg.groupId : msg.sender === payload.receiver;
             });
 
             this.chatting.chattingMsgList.push(payload);
-            this.messageList[index].firstMsg = payload.firstMsg;
+            if (payload.MsgType === globalConfig.message.type.raw_text) {
+                this.messageList[index].firstMsg = payload.firstMsg;
+            } else if (payload.MsgType === globalConfig.message.type.img_text) {
+                this.messageList[index].firstMsg = payload.firstMsg;
+            }
 
         },
-        onClose() {
-            const router = useRouter();
-            errorTips(LANG.WS.DISCONNECT);
-            router.push({name: "login"});
+        onError() {
+            while (true) {
+                this.connect();
+                if (this.wsClient && this.wsClient.readyState === 1) {
+                    break;
+                }
+            }
         },
         clearGroupList() {
             this.concat.groupList = reactive([]);

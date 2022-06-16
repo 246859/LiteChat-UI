@@ -25,10 +25,9 @@ export const globalConfig = {
     },
     message: {
         type: {
-            raw_text: 0,
-            img_text: 1,
-            file_text: 2,
-            mix_text: 3
+            raw_text: "RAW",
+            img_text: "IMG",
+            file_text: "FILE",
         },
     },
     tokenAddress: "94a2776e7bd6f611462bc4344e17773c65fc4c486401643b724d102a8936dff4",
