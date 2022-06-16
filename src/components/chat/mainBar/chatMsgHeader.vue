@@ -56,9 +56,8 @@ export default {
 
     function closeConversation() {//关闭会话
 
-
       let index = chatStore.messageList.findIndex(msg => {
-        return isGroup ? msg.groupId === chatStore.chatting.groupId : msg.sender === chatStore.chatting.sender;
+        return isGroup.value ? msg.groupId === chatStore.chatting.groupId : msg.sender === chatStore.chatting.sender;
       });
 
       console.log(index)

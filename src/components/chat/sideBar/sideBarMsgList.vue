@@ -16,6 +16,7 @@ import SideMsgCard from "@/components/chat/sideBar/sideMsgCard";
 import '../../../assets/style/chatPage.css';
 import {useChatStore} from "@/sotre/chatStore";
 import {getUserNameFromToken} from "@/utils/storage";
+import {useRouter} from "vue-router";
 
 export default {
   name: "sideBarMsgList",
@@ -25,13 +26,14 @@ export default {
   setup() {
 
     const chatStore = useChatStore();
+    const router = useRouter();
     let sideMessageList = chatStore.messageList
 
     const jumpToMessage = (msg) => {//传递跳转信息
 
       let isGroup = msg.isGroup;
       if (isGroup ? msg.groupId === chatStore.chatting.groupId : msg.sender === chatStore.chatting.sender) {//判断点击的对象是否为正在会话的对象,避免重复请求
-        return;
+        if (router.currentRoute.value.path === '/chatPage') return;
       }
 
       chatStore.chatting.sender = msg.sender;
