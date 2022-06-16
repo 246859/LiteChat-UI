@@ -35,7 +35,6 @@ export default {
 
     let src = "../../../assets/img/avatar/jojo.jpg";
 
-    console.log(props.sender)
     const userName = getUserNameFromToken();//从token中的payload获取用户名
     const sendBox = ref();
     const msgBox = ref();

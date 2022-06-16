@@ -46,6 +46,8 @@ export default {
       chatStore.chatting.chattingMsgList.splice(0, chatStore.chatting.chattingMsgList.length);
       chatStore.chatting.avatar = require('../../../assets/img/avatar/avatar2.png');
       chatStore.sidePage.pageFlag = 0;
+      chatStore.chatRecord.page = 0;
+      chatStore.chatRecord.top = false;
 
       //在消息列表中是否已经存在
       let index = chatStore.messageList.findIndex((msg) => {

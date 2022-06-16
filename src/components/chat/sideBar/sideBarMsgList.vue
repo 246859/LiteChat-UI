@@ -36,6 +36,9 @@ export default {
         if (router.currentRoute.value.path === '/chatPage') return;
       }
 
+      //初始化全局状态
+      chatStore.chatRecord.top = false;
+      chatStore.chatRecord.page = 0;
       chatStore.chatting.sender = msg.sender;
       chatStore.chatting.conversationName = msg.conversationName
       chatStore.chatting.isGroup = msg.isGroup;
@@ -43,6 +46,7 @@ export default {
       chatStore.chatting.groupId = msg.groupId;
       chatStore.sidePage.pageFlag = 0;
       chatStore.chatting.chattingMsgList.splice(0, chatStore.chatting.chattingMsgList.length);
+
     }
 
     return {

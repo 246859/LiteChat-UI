@@ -26,6 +26,10 @@ export const useChatStore = defineStore('chatStore', {
                 groupId: "",
                 time: "",
             },
+            chatRecord: {
+                top: false,
+                page: 0
+            },
             messageList: []
         }
     },

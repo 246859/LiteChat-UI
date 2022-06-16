@@ -140,4 +140,29 @@ export const getUserInfoService = (userName) => {
     )
 };
 
+export const getPrivateMsgService = (userName, friendName, page) => {
+    return service.get(
+        '/chat/getPrivateMsg',
+        {
+            params: {
+                userName: userName,
+                friendName: friendName,
+                page: page
+            }
+        }
+    )
+};
+
+export const getGroupMsgService = (groupId, page) => {
+    return service.get(
+        '/chat/getGroupMsg',
+        {
+            params: {
+                groupId: groupId,
+                page: page,
+            }
+        }
+    )
+};
+
 

@@ -1,6 +1,10 @@
 <template>
   <div class="chat-header">
-    <h5 class="message-sender text-hidden">{{ conversationName }}</h5>
+    <div class="header-content">
+      <h5 class="message-sender text-hidden">{{ conversationName }}</h5>
+      <span v-if="isGroup" class="groupId">{{ `ID:${groupId}` }}</span>
+      <span v-if="!isGroup" class="groupId">{{ `ID:${sender}` }}</span>
+    </div>
     <el-dropdown trigger="click">
       <icon class="chat-set" symbol="icon-set"></icon>
       <template #dropdown>
@@ -35,6 +39,7 @@ export default {
     let conversationName = ref(chatStore.chatting.conversationName);
     let isGroup = ref(chatStore.chatting.isGroup);
     let sender = ref(chatStore.chatting.sender);
+    let groupId = ref(chatStore.chatting.groupId);
     let userName = getUserNameFromToken();
 
 
@@ -45,13 +50,16 @@ export default {
       //重新读取页面缓存的数据
       conversationName.value = chatStore.chatting.conversationName = chatting.conversationName;
       isGroup.value = chatStore.chatting.isGroup = chatting.isGroup;
-      chatStore.chatting.sender = chatting.sender;
+      sender.value = chatStore.chatting.sender = chatting.sender;
+      groupId.value = chatStore.chatting.groupId = chatting.groupId;
     }
 
     //订阅state变化
     chatStore.$subscribe((mutation, state) => {
       conversationName.value = state.chatting.conversationName;
       isGroup.value = state.chatting.isGroup;
+      groupId.value = state.chatting.groupId;
+      sender.value = state.chatting.sender;
     });
 
     function closeConversation() {//关闭会话
@@ -98,6 +106,8 @@ export default {
     return {
       conversationName,
       isGroup,
+      groupId,
+      sender,
       closeConversation,
       deleteConversation
     }
@@ -107,8 +117,9 @@ export default {
 
 <style scoped>
 .chat-header {
-  padding: 20px 0;
+  padding: 13px 0;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -118,6 +129,11 @@ export default {
 }
 
 .message-sender {
-  width: 400px;
+  width: 200px;
+}
+
+.groupId {
+  color: #666666;
+  font-size: 12px;
 }
 </style>

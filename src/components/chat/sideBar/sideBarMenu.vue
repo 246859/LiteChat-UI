@@ -29,7 +29,7 @@
         <icon class="sideBar-icon" symbol="icon-yonghu" @click="colorChange(2)"></icon>
       </li>
       <!--轻享空间-->
-      <li ref="liteZone">
+      <li v-show="false" ref="liteZone">
         <icon class="sideBar-icon" symbol="icon-pengyouquan" @click="colorChange(3)"></icon>
       </li>
 
