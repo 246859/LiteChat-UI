@@ -170,7 +170,7 @@ export default {
 }
 
 .file-msg-card p {
-  text-align: center;
+  text-align: right;
   color: #666666;
   font-size: 13px;
 }

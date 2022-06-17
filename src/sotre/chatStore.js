@@ -85,7 +85,6 @@ export const useChatStore = defineStore('chatStore', {
         },
         onChatMessage(payload) {
             //判断接收的消息是否是正在进行的会话消息,是的话则渲染,否的话存入另外渲染
-            console.log(payload)
 
             //判断当前左侧聊天列表是否为空,有消息发送过来时渲染页面
             if (this.messageList.length === 0) {
@@ -105,7 +104,6 @@ export const useChatStore = defineStore('chatStore', {
             }
 
             payload.firstMsg = getFirstMsgFromPayload(payload);
-            console.log(payload.firstMsg);
 
             //是否存在
             let index = this.messageList.findIndex((msg) => {
